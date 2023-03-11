@@ -3,8 +3,17 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { employedPortal, empPic } from "../assets/images";
 import '../css/employe-portal.css';
+import { getAllStaff } from "../services/api/api-actions";
 const EmployeePortal = () => {
   const navigate = useNavigate();
+  const [allStaff, setAllStaff] = React.useState([]);
+  React.useEffect(() => {
+    (async () => {
+      const res = await getAllStaff();
+      console.log('res in screen=>', res);
+      setAllStaff(res?.data || [])
+    })()
+  }, [])
   return (
     <Grid>
       <Grid sx={{
@@ -36,7 +45,7 @@ const EmployeePortal = () => {
         </Button>
       </Grid>
       <Grid container justifyContent="center">
-        {[0, 1, 2, 3, 4, 6].map((item) => (
+        {allStaff?.map((item) => (
           <Box
             className="card"
             sx={{
@@ -72,7 +81,7 @@ const EmployeePortal = () => {
                     }}
                   />
                 </Box>
-                <Typography className="text" ml={'5px'}>Ahmad</Typography>
+                <Typography className="text" ml={'5px'}>{item?.name}</Typography>
               </Box>
               <Box display={'flex'} alignItems={'flex-end'} flexDirection={'column'}>
                 <Button

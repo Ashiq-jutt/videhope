@@ -10,21 +10,39 @@ import {
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewUser } from "../assets/images";
+import { onLogin, onSignup } from "../services/api/api-actions";
 // import Masonry from "@mui/lab/Masonry";
 const CreateNewUser = () => {
   const navigate = useNavigate();
   const [age, setAge] = React.useState("");
-
+  const [payload, setPayload] = React.useState({
+    Name: '',
+    Email: '',
+    AccessTo: 'Accounting',
+    Password: '',
+    ConfirmPassword: '',
+    Profile: null,
+    Role: 'Staff',
+  })
+  const onSubmit = async () => {
+    try {
+      const obj = { ...payload }
+      delete obj.ConfirmPassword;
+      await onSignup(obj);
+    } catch (error) {
+      console.log('error=>', error);
+    }
+  }
   return (
     <Box
       display={"flex"}
       flexDirection="column"
       justifyContent={"center"}
       alignItems={"center"}
-    
+
     >
       <Box className="card"
-      padding="20px"
+        padding="20px"
         sx={{
           //   width: "cal(100% - 700px)",
           // boxShadow: "1px 1px 2px  #000",
@@ -65,6 +83,9 @@ const CreateNewUser = () => {
             autoComplete="off"
           >
             <TextField
+              onChange={(event) => {
+                setPayload({ ...payload, Name: event?.target?.value })
+              }}
               id="standard-basic"
               label="Name"
               variant="standard"
@@ -80,12 +101,30 @@ const CreateNewUser = () => {
             autoComplete="off"
           >
             <TextField
+              onChange={(event) => {
+                setPayload({ ...payload, Email: event?.target?.value })
+              }}
               id="standard-basic"
               label="Email"
               variant="standard"
               autoComplete="off"
             />
           </Box>
+          {/* <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { width: "32ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-basic"
+              label="Role"
+              variant="standard"
+              autoComplete="off"
+            />
+          </Box> */}
           <Box
             component="form"
             sx={{
@@ -95,6 +134,9 @@ const CreateNewUser = () => {
             autoComplete="off"
           >
             <TextField
+              onChange={(event) => {
+                setPayload({ ...payload, Password: event?.target?.value })
+              }}
               id="standard-basic"
               label="Password"
               variant="standard"
@@ -111,6 +153,9 @@ const CreateNewUser = () => {
             mb={4}
           >
             <TextField
+              onChange={(event) => {
+                setPayload({ ...payload, ConfirmPassword: event?.target?.value })
+              }}
               id="standard-basic"
               label="ConfirmPassword"
               variant="standard"
@@ -128,19 +173,21 @@ const CreateNewUser = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
+                value={payload?.AccessTo}
                 label="Age"
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(event) => {
+                  setPayload({ ...payload, AccessTo: event?.target?.value })
+                }}
               >
-                <MenuItem value={20}>Accounting</MenuItem>
-                <MenuItem value={10}>Creators Panel</MenuItem>
-                <MenuItem value={30}>Customer Services</MenuItem>
+                <MenuItem value={'Accounting'}>Accounting</MenuItem>
+                <MenuItem value={'Creators Panel'}>Creators Panel</MenuItem>
+                <MenuItem value={'Customer Services'}>Customer Services</MenuItem>
               </Select>
             </FormControl>
           </Box>
           <Box ml={3}>
             <Button
-              onClick={() => navigate("/employeePortal")}
+              onClick={onSubmit}
               sx={{
                 bgcolor: "blue",
                 color: "white",

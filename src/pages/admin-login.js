@@ -16,10 +16,27 @@ import {
 } from "../assets/images";
 // import Masonry from "@mui/lab/Masonry";
 import { useNavigate } from "react-router-dom";
-
+import { onLogin } from "../services/api/api-actions";
+import { useDispatch } from "react-redux";
+import useToken from "../hooks/use-token";
+// Email= "Hervinmb@kankira.com",
+// Password="Zikk@1234"
 const AdminLogin = () => {
+    const { setToken } = useToken()
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const [loading, setLoading] = React.useState(false);
+    const [payload, setPayload] = React.useState({
+        email: '',
+        password: '',
+    });
+    const onSubmit = () => {
+        try {
+            dispatch(onLogin(payload, setLoading, setToken));
+        } catch (error) {
+            console.log('error=>', error);
+        }
+    }
     return (
         <Box
             display={"flex"}
@@ -78,6 +95,10 @@ const AdminLogin = () => {
                         autoComplete="off"
                     >
                         <TextField
+                            onChange={(event) => {
+                                setPayload({ ...payload, email: event?.target?.value })
+                                console.log('event value', event?.target?.value);
+                            }}
                             id="standard-basic"
                             label="username"
                             variant="standard"
@@ -94,6 +115,10 @@ const AdminLogin = () => {
                         mb={7}
                     >
                         <TextField
+                            onChange={(event) => {
+                                setPayload({ ...payload, password: event?.target?.value })
+                                console.log('pass event value', event?.target?.value);
+                            }}
                             id="standard-basic"
                             label="password"
                             variant="standard"
@@ -101,7 +126,7 @@ const AdminLogin = () => {
                         />
                     </Box>
                     <Button
-                        onClick={() => navigate("/employPortal")}
+                        onClick={onSubmit}
                         sx={{
                             bgcolor: "blue",
                             color: "white",

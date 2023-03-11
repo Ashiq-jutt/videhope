@@ -19,6 +19,7 @@ import * as React from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import * as SVG from "../assets/svgs";
+import useToken from "../hooks/use-token";
 import Accounting from "../pages/accounting";
 import CreatorPanelLogin from "../pages/creator-panel-login";
 import CustomerLogin from "../pages/cutomer-ligin";
@@ -122,7 +123,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false);
   const [route, setRoute] = React.useState("users");
-
+  const { token, setToken } = useToken();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -221,7 +222,7 @@ export default function PersistentDrawerLeft() {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to={"/"}>
+            <Link onClick={() => { setToken('') }} style={{ textDecoration: "none" }} to={"/"}>
               <ListItem key={6} disablePadding>
                 <ListItemButton style={{ width: "200px" }}>
                   <ListItemIcon>
