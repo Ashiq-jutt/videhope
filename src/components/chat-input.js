@@ -1,0 +1,46 @@
+import Button from '@material-ui/core/Button';
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import TextField from '@material-ui/core/TextField';
+// import SendIcon from '@material-ui/icons/Send';
+import React from 'react';
+
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        wrapForm: {
+            display: "flex",
+            justifyContent: "center",
+            width: "95%",
+            margin: `${theme.spacing(0)} auto`
+        },
+        wrapText: {
+            width: "100%"
+        },
+        button: {
+            //margin: theme.spacing(1),
+        },
+    })
+);
+
+
+export const TextInput = () => {
+    const classes = useStyles();
+    return (
+        <>
+            <form className={classes.wrapForm} noValidate autoComplete="off">
+                <TextField
+                    id="standard-text"
+                    label="メッセージを入力"
+                    className={classes.wrapText}
+                //margin="normal"
+                />
+                <Button variant="contained" color="primary" className={classes.button}>
+                    {/* <SendIcon /> */}
+                </Button>
+            </form>
+        </>
+    )
+}
+
+
+
