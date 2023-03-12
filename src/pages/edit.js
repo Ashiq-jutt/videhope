@@ -4,12 +4,14 @@ import React from "react";
 import { newestPic } from "../assets/images";
 import { updateStaff } from "../services/api/api-actions";
 import { useLocation } from 'react-router-dom';
+import { isBlock } from "@babel/types";
 const EditProfile = () => {
   const location = useLocation();
-  const item = location?.state?.item;
-  console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ item:", item)
+  const myData = location?.state?.item;
+  const { id } = myData
+  // console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", id)
   const [payload, setPayload] = React.useState({
-    staffId: 5,
+    staffId: id,
     accessTo: 'Accounting',
     isBlocked: false
   })
@@ -17,9 +19,8 @@ const EditProfile = () => {
     accounting: false,
     createPanel: false,
     createService: false,
-    isBlocked: false,
-
   })
+  const [isBlocked, setIsBlocked] = useState(false)
   const updateData = async () => {
     try {
       await updateStaff(payload);
@@ -27,13 +28,18 @@ const EditProfile = () => {
       console.log('error=>', error);
     }
   }
-  const [checked, setChecked] = React.useState(true);
-  const [checked1, setChecked1] = React.useState(true);
 
-  const handleChange1 = (event) => {
-    setChecked1(event.target.checked1);
+  const handleCheck = (val) => {
+    if (val == 'isBlock') {
+
+    } else {
+
+    }
+
   };
   const handleChange = (event) => {
+    console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", event.target.value)
+
     setChecked(event.target.checked);
   };
   return (
@@ -140,7 +146,7 @@ const EditProfile = () => {
             <Typography>
               <Switch
                 checked1={checked}
-                onChange={handleChange}
+                onChange={handleCheck(isBlock)}
                 inputProps={{ "aria-label": "controlled" }}
               />
             </Typography>
@@ -160,7 +166,9 @@ const EditProfile = () => {
             <Typography fontSize={14} ml={4.2}>
               Login Access
             </Typography>
-            {["Accounting", "Creators Panel", "Customer Service"].map(
+            {[{ data: "Accounting", value: 'accounting' },
+            { data: "Creators Panel", value: 'createPanel' },
+            { data: "Customer Service", value: 'customer' }].map(
               (item) => (
                 <Box
                   sx={{
@@ -173,11 +181,11 @@ const EditProfile = () => {
                     p: "1px",
                   }}
                 >
-                  <Typography fontSize={"12px"}>{item}</Typography>
+                  <Typography fontSize={"12px"}>{item.data}</Typography>
                   <Typography>
                     <Switch
                       checked1={checked1}
-                      onChange={handleChange1}
+                      onChange={handleCheck(item.value)}
                       inputProps={{ "aria-label": "controlled" }}
                     />
                   </Typography>

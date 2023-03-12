@@ -120,10 +120,9 @@ const EmployeePortal = () => {
                   Detail
                 </Button>
                 <Button
-                  onClick={() =>
-                    navigate("/editProfile", { mydata: "urjdjfkslafasilr" })
-                  }
-                  className="button"
+                  // navigate('/second-page', { state: { myData: 'Hello World' } });
+                  onClick={() => navigate('/editProfile', { state: { item: item } })}
+                  className='button'
                   sx={{
                     bgcolor: "#ff9800",
                     "&:hover": {
