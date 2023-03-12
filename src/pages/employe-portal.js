@@ -2,42 +2,43 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { employedPortal, empPic } from "../assets/images";
-import '../css/employe-portal.css';
+import "../css/employe-portal.css";
 import { getAllStaff } from "../services/api/api-actions";
 const EmployeePortal = () => {
   const navigate = useNavigate();
   const [allStaff, setAllStaff] = React.useState([]);
+  
   React.useEffect(() => {
     (async () => {
       const res = await getAllStaff();
-      console.log('res in screen=>', res);
-      setAllStaff(res?.data || [])
-    })()
-  }, [])
+      console.log("res in screen=>", res);
+      setAllStaff(res?.data || []);
+    })();
+  }, []);
   return (
     <Grid>
-      <Grid sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      <Grid
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Box>
-          <img alt="Pic here" src={employedPortal}
-            className='image'
-          />
+          <img alt="Pic here" src={employedPortal} className="image" />
         </Box>
         <Button
-          onClick={() => navigate('/createNewUser')}
+          onClick={() => navigate("/createNewUser")}
           sx={{
-            mt: '20px',
-            mb: '30px',
+            mt: "20px",
+            mb: "30px",
             bgcolor: "#0288d1",
             height: "40px",
-            width: { sm: '320px', xs: '200px' },
+            width: { sm: "320px", xs: "200px" },
             borderRadius: "16px",
             color: "#fff",
-            textTransform: 'capitalize',
+            textTransform: "capitalize",
             "&:hover": {
               backgroundColor: "#0288d1",
               // opacity: [0.9, 0.8, 0.7],
@@ -63,15 +64,19 @@ const EmployeePortal = () => {
               //   opacity: [0.9, 0.8, 0.7],
               // },
               border: ".4px solid grey",
-              px: '3px',
-              py: '5px',
-              my: '10px',
-              mx: '20px',
+              px: "3px",
+              py: "5px",
+              my: "10px",
+              mx: "20px",
               borderRadius: 3,
             }}
           >
-            <Grid container alignItems={"center"} justifyContent={'space-between'}>
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+            <Grid
+              container
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
                 <Box>
                   <img
                     alt="Pic here"
@@ -84,12 +89,20 @@ const EmployeePortal = () => {
                     }}
                   />
                 </Box>
-                <Typography className="text" ml={'5px'}>{item?.name}</Typography>
+                <Typography className="text" ml={"5px"}>
+                  {item?.name}
+                </Typography>
               </Box>
-              <Box display={'flex'} alignItems={'flex-end'} flexDirection={'column'}>
+              <Box
+                display={"flex"}
+                alignItems={"flex-end"}
+                flexDirection={"column"}
+              >
                 <Button
-                  onClick={() => navigate('/detail')}
-                  className='button'
+             l
+             
+                  onClick={   () => navigate('/detail', { state: { item: item } })}
+                  className="button"
                   sx={{
                     borderRadius: 10,
                     height: "26px",
@@ -101,15 +114,16 @@ const EmployeePortal = () => {
                     },
                     color: "#fff",
                     fontSize: 12,
-                    textTransform: 'capitalize'
-
+                    textTransform: "capitalize",
                   }}
                 >
                   Detail
                 </Button>
                 <Button
-                  onClick={() => navigate('/editProfile', { mydata: 'urjdjfkslafasilr' })}
-                  className='button'
+                  onClick={() =>
+                    navigate("/editProfile", { mydata: "urjdjfkslafasilr" })
+                  }
+                  className="button"
                   sx={{
                     bgcolor: "#ff9800",
                     "&:hover": {
@@ -119,9 +133,9 @@ const EmployeePortal = () => {
                     borderRadius: 10,
                     height: "26px",
                     width: "170px",
-                    mt: '5px',
+                    mt: "5px",
                     color: "#fff",
-                    textTransform: 'capitalize'
+                    textTransform: "capitalize",
                   }}
                 >
                   Edit
@@ -131,7 +145,7 @@ const EmployeePortal = () => {
           </Box>
         ))}
       </Grid>
-    </Grid >
+    </Grid>
   );
 };
 
