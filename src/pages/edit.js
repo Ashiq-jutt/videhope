@@ -5,6 +5,7 @@ import { newestPic } from "../assets/images";
 import { updateStaff } from "../services/api/api-actions";
 import { useLocation } from 'react-router-dom';
 import { isBlock } from "@babel/types";
+import { useState } from "react";
 const EditProfile = () => {
   const location = useLocation();
   const myData = location?.state?.item;
@@ -32,16 +33,17 @@ const EditProfile = () => {
   const handleCheck = (val) => {
     if (val == 'isBlock') {
 
+
     } else {
 
     }
 
   };
-  const handleChange = (event) => {
-    console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", event.target.value)
+  // const handleChange = (event) => {
+  //   console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", event.target.value)
 
-    setChecked(event.target.checked);
-  };
+  //   setChecked(event.target.checked);
+  // };
   return (
     <Box
       display={"flex"}
@@ -145,7 +147,7 @@ const EditProfile = () => {
             </Typography>
             <Typography>
               <Switch
-                checked1={checked}
+                isBlock={isBlock}
                 onChange={handleCheck(isBlock)}
                 inputProps={{ "aria-label": "controlled" }}
               />
@@ -184,7 +186,7 @@ const EditProfile = () => {
                   <Typography fontSize={"12px"}>{item.data}</Typography>
                   <Typography>
                     <Switch
-                      checked1={checked1}
+                      data={item.value}
                       onChange={handleCheck(item.value)}
                       inputProps={{ "aria-label": "controlled" }}
                     />
