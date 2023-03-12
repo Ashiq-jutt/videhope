@@ -129,6 +129,10 @@ const AdminLogin = () => {
                         onClick={onSubmit}
                         sx={{
                             bgcolor: "blue",
+                            "&:hover": {
+                                backgroundColor: "blue",
+                                // opacity: [0.9, 0.8, 0.7],
+                            },
                             color: "white",
                             borderRadius: "50px",
                             px: { sm: 12, xs: 8 },

@@ -28,6 +28,7 @@ import NewestDetail from "./pages/newest-detail";
 import Subscription from "./pages/subscription";
 import UserProfile from "./pages/user-profile";
 import WithdrawRwquest from "./pages/withdraw-request";
+import ErrorPage from "./pages/ErrorPage";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         {!token ? <Route path="/" element={<AdminLogin setToken={setToken} />} />
           : <Route path="/" element={<PersistentDrawerLeft />}>
             <Route path="/" element={<EmployeePortal />} />
+            <Route path="dashboard" element={<EmployeePortal />} />
             <Route path="userProfile" element={<UserProfile />} />
             <Route path="creatorPanelLogin" element={<CreatorPanelLogin />} />
             <Route path="employeePortal" element={<EmployeePortal />} />
@@ -61,6 +63,7 @@ function App() {
             <Route path="contentReport" element={<ContentReport />} />
             <Route path="accountReported" element={<AccountReported />} />
             <Route path="subscription" element={<Subscription />} />
+            <Route path="*" element={<ErrorPage />} />
           </Route>}
       </Routes>
     </>

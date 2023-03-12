@@ -189,7 +189,11 @@ const CreateNewUser = () => {
             <Button
               onClick={onSubmit}
               sx={{
-                bgcolor: "blue",
+                bgcolor: "#0288d1",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  opacity: [0.9, 0.8, 0.7],
+                },
                 color: "white",
                 borderRadius: "50px",
                 px: 12,

@@ -6,6 +6,7 @@ export const URLS = {
         signup: 'staff/register',
         login: 'staff/login',
         get_all: 'staff/get-all',
+        update_access: 'staff/update_access',
     },
 
 };

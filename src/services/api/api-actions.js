@@ -1,5 +1,5 @@
 
-import { getData, postData, postFormData } from '.';
+import { getData, postData, postFormData, putData } from '.';
 import { setUserInfo } from '../../store/reducers/user-reducer';
 import { URLS } from './api-urls';
 //
@@ -29,6 +29,15 @@ export const onLogin = (values, setLoading = (bool) => { }, setToken) => {
   };
 };
 
+export const updateStaff = async (values) => {
+  try {
+    const res = await putData(URLS.staff.update_access, values);
+    console.log('res of updateStaff=>', res);
+    return res;
+  } catch (error) {
+    console.log('error in updateStaff', error);
+  }
+};
 export const getAllStaff = async (values) => {
   try {
     const res = await getData(URLS.staff.get_all, values);

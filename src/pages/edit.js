@@ -2,7 +2,31 @@ import { Button, Grid, Switch, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { newestPic } from "../assets/images";
+import { updateStaff } from "../services/api/api-actions";
+import { useLocation } from 'react-router-dom';
 const EditProfile = () => {
+  const location = useLocation();
+  const item = location?.state?.item;
+  console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ item:", item)
+  const [payload, setPayload] = React.useState({
+    staffId: 5,
+    accessTo: 'Accounting',
+    isBlocked: false
+  })
+  const [data, setData] = React.useState({
+    accounting: false,
+    createPanel: false,
+    createService: false,
+    isBlocked: false,
+
+  })
+  const updateData = async () => {
+    try {
+      await updateStaff(payload);
+    } catch (error) {
+      console.log('error=>', error);
+    }
+  }
   const [checked, setChecked] = React.useState(true);
   const [checked1, setChecked1] = React.useState(true);
 
@@ -37,14 +61,14 @@ const EditProfile = () => {
         sx={{
           mt: 4,
           height: "250px",
-          width: {xs:'none',sm:'470px'},
+          width: { xs: 'none', sm: '470px' },
           bgcolor: "white",
           boxShadow: "1px 1px 5px  #000",
           borderRadius: "30px",
           display: "flex",
-          flexDirection: {xs:"column",sm:"row"}
-          
-          
+          flexDirection: { xs: "column", sm: "row" }
+
+
         }}
       >
 
@@ -56,8 +80,8 @@ const EditProfile = () => {
             // bgcolor: "blue",
             alignItems: "center",
             justifyContent: "center",
-          
-            
+
+
           }}
         >
           <Box>
@@ -68,7 +92,7 @@ const EditProfile = () => {
                 height: "160px",
                 width: "160px",
                 borderRadius: "100px",
-                
+
               }}
             />
             <Box>
@@ -81,7 +105,7 @@ const EditProfile = () => {
             </Box>
           </Box>
         </Grid>
-        <br/>
+        <br />
         <Box
           style={{
             width: "235px",
@@ -91,8 +115,8 @@ const EditProfile = () => {
             alignItems: "center",
             backgroundColor: "#ADD8E6",
             flexDirection: "column",
-          
-            marginTop:'25px'
+
+            marginTop: '25px'
           }}
         >
           <Box
@@ -106,8 +130,8 @@ const EditProfile = () => {
               justifyContent: "space-around",
               flexDirection: "row",
               alignItems: "center",
-           
-              
+
+
             }}
           >
             <Typography m={1} fontSize={"24px"}>

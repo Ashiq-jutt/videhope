@@ -37,8 +37,11 @@ const EmployeePortal = () => {
             width: { sm: '320px', xs: '200px' },
             borderRadius: "16px",
             color: "#fff",
-            textTransform: 'capitalize'
-            // outline: 'thick double #32a1ce'
+            textTransform: 'capitalize',
+            "&:hover": {
+              backgroundColor: "#0288d1",
+              // opacity: [0.9, 0.8, 0.7],
+            },
           }}
         >
           Create New User
@@ -47,13 +50,13 @@ const EmployeePortal = () => {
       <Grid container justifyContent="center">
         {allStaff?.map((item) => (
           <Box
+            key={item?.id}
             className="card"
             sx={{
               boxShadow: "3px 4px 10px  #000",
               shadowOpacity: 0.46,
               width: "26rem",
               height: "4.2rem",
-
               bgcolor: "#fff",
               // "&:hover": {
               // backgroundColor: "red",
@@ -92,6 +95,10 @@ const EmployeePortal = () => {
                     height: "26px",
                     width: "170px",
                     bgcolor: "#0288d1",
+                    "&:hover": {
+                      backgroundColor: "#0288d1",
+                      // opacity: [0.9, 0.8, 0.7],
+                    },
                     color: "#fff",
                     fontSize: 12,
                     textTransform: 'capitalize'
@@ -101,10 +108,14 @@ const EmployeePortal = () => {
                   Detail
                 </Button>
                 <Button
-                  onClick={() => navigate('/editProfile')}
+                  onClick={() => navigate('/editProfile', { mydata: 'urjdjfkslafasilr' })}
                   className='button'
                   sx={{
                     bgcolor: "#ff9800",
+                    "&:hover": {
+                      backgroundColor: "#ff9800",
+                      // opacity: [0.9, 0.8, 0.7],
+                    },
                     borderRadius: 10,
                     height: "26px",
                     width: "170px",
