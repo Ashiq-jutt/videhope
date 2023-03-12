@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 // import React from "react";
 import { useSelector } from "react-redux";
-import '../src/services/api/axios-interceptor';
+import "../src/services/api/axios-interceptor";
 import "./App.css";
 import PersistentDrawerLeft from "./components/drawer";
 import useToken from "./hooks/use-token";
@@ -30,16 +30,17 @@ import UserProfile from "./pages/user-profile";
 import WithdrawRwquest from "./pages/withdraw-request";
 import ErrorPage from "./pages/ErrorPage";
 
-
 function App() {
-  const { user } = useSelector(s => s);
+  const { user } = useSelector((s) => s);
   const { token, setToken } = useToken(null);
 
   return (
     <>
       <Routes>
-        {!token ? <Route path="/" element={<AdminLogin setToken={setToken} />} />
-          : <Route path="/" element={<PersistentDrawerLeft />}>
+        {!token ? (
+          <Route path="/" element={<AdminLogin setToken={setToken} />} />
+        ) : (
+          <Route path="/" element={<PersistentDrawerLeft />}>
             <Route path="/" element={<EmployeePortal />} />
             <Route path="dashboard" element={<EmployeePortal />} />
             <Route path="userProfile" element={<UserProfile />} />
@@ -64,7 +65,8 @@ function App() {
             <Route path="accountReported" element={<AccountReported />} />
             <Route path="subscription" element={<Subscription />} />
             <Route path="*" element={<ErrorPage />} />
-          </Route>}
+          </Route>
+        )}
       </Routes>
     </>
   );

@@ -1,9 +1,13 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { newestPic } from "../assets/images";
-import '../css/detail.css'
+import "../css/detail.css";
 const Detail = () => {
+  const location = useLocation();
+  const myData = location?.state?.item;
+  console.log(myData)
   return (
     <Box
       display={"flex"}
@@ -20,7 +24,7 @@ const Detail = () => {
           height: "50px",
           borderRadius: "20px",
           mt: -4,
-          textTransform: 'capitalize'
+          textTransform: "capitalize",
         }}
       >
         Detail
@@ -30,12 +34,12 @@ const Detail = () => {
         sx={{
           mt: 4,
           // px: 10,
-          width: { sm: '90vh', xs: "39.5vh" },
-          height: { sm: 'auto', xs: 'auto' },
+          width: { sm: "90vh", xs: "50.5vh" },
+          height: { sm: "auto", xs: "auto" },
           bgcolor: "white",
           boxShadow: "1px 1px 5px  #000",
           borderRadius: "30px",
-          display: { md: "flexWrap", sm: "flex", xs: 'flexWrap' },
+          display: { md: "flexWrap", sm: "flex", xs: "flexWrap" },
           // bgcolor: "green",
         }}
       >
@@ -59,12 +63,12 @@ const Detail = () => {
                 borderRadius: "100px",
               }}
             />
-            <Box>
+            <Box className="d-flex" sx={{ justifyContent:'center',alignItems: 'center',flexDirection:'column'}}>
               <Typography fontSize={"24px"} ml={4}>
-                Ahmad
+                {myData.name}
               </Typography>
               <Typography fontSize={"12px"} ml={2} mt={-1}>
-                Jacksonmariay@gmail.com
+             {myData.email}
               </Typography>
             </Box>
           </Box>
@@ -74,7 +78,7 @@ const Detail = () => {
             flex: 1,
           }}
         >
-          <Box mt={{ sm: 3, xs: '2px' }}>
+          <Box mt={{ sm: 3, xs: "2px" }}>
             <Typography fontSize={"24px"} textAlign="center">
               Query Filter
             </Typography>
@@ -82,11 +86,11 @@ const Detail = () => {
               <Button
                 sx={{
                   // variant: "outlined",
-                  textTransform: 'capitalize',
+                  textTransform: "capitalize",
                   bgcolor: "blue",
                   color: "white",
                   boxShadow: "1px 1px 5px #000",
-                  width: "270px",
+                  width: { xs: "200px", sm: "150px", md: "270px" },
                   px: "35px",
                   borderRadius: "20px",
                   mb: 1,
@@ -96,11 +100,11 @@ const Detail = () => {
               </Button>
               <Button
                 sx={{
-                  textTransform: 'capitalize',
+                  textTransform: "capitalize",
                   bgcolor: "white",
                   color: "grey",
                   boxShadow: "1px 1px 5px #000",
-                  width: "270px",
+                  width: { xs: "200px", sm: "150px", md: "270px" },
                   height: "35px",
                   borderRadius: "20px",
                   mb: 1,
@@ -110,11 +114,11 @@ const Detail = () => {
               </Button>
               <Button
                 sx={{
-                  textTransform: 'capitalize',
+                  textTransform: "capitalize",
                   bgcolor: "white",
                   color: "grey",
                   boxShadow: "1px 1px 5px #000",
-                  width: "270px",
+                  width: { xs: "200px", sm: "150px", md: "270px" },
                   height: "35px",
                   borderRadius: "20px",
                   mb: 1,
@@ -130,7 +134,7 @@ const Detail = () => {
                 color: "grey",
                 display: "flex",
                 boxShadow: "1px 1px 5px #000",
-                width: "310px",
+                width: { xs: "240px", sm: "300px", md: "310px" },
                 height: "52px",
                 borderRadius: "20px 0px 30px 20px ",
                 mt: "2px",
@@ -149,37 +153,35 @@ const Detail = () => {
       <Box
         sx={{
           // bgcolor: { sm: "white", xs: '' },
-          width: { sm: "65vw", xs: '75vw' },
+          width: { sm: "65vw", xs: "75vw" },
           boxShadow: "1px 1px 5px  #000",
           borderRadius: "35px",
           direction: "column",
           px: 4,
           pb: "10px",
           my: 3,
-          
         }}
       >
         <Grid
           container
           sx={{
-            px: { sm: '5px', xs: '8px' },
-            width: { sm: "60vw", xs: '75vw' },
+            px: { sm: "5px", xs: "8px" },
+            width: { sm: "50vw", xs: "60vw" ,md:'60vw'},
             boxShadow: "1px 1px 5px  #000",
             borderRadius: "0px 0px 20px 20px ",
             direction: "row",
-            py: '10px',
+            py: "10px",
             mt: "1px",
           }}
         >
-          <Grid container xs={2.4} fontSize={{ sm: 16, xs: 13 }}
-          >
+          <Grid container xs={2.4} fontSize={{ sm: 16, xs: 10 }}>
             Query Recieved
           </Grid>
           <Grid
             container
             justifyContent={"center"}
             xs={2.4}
-            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 13 } }}
+            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 10 } }}
           >
             Status
           </Grid>
@@ -187,7 +189,7 @@ const Detail = () => {
             container
             justifyContent={"center"}
             xs={2.4}
-            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 13 } }}
+            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 10 } }}
           >
             Query Respond
           </Grid>
@@ -195,7 +197,7 @@ const Detail = () => {
             container
             justifyContent={"center"}
             xs={2.4}
-            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 13 } }}
+            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 10 } }}
           >
             Login time
           </Grid>
@@ -204,7 +206,7 @@ const Detail = () => {
             justifyContent="center"
             // alignself="center"
             xs={2.4}
-            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 13 } }}
+            sx={{ borderLeft: { sm: 1, xs: 0 }, fontSize: { sm: 16, xs: 10 } }}
           >
             Logout time
           </Grid>
@@ -215,21 +217,20 @@ const Detail = () => {
             container
             sx={{
               // px: { xs: 'px', sm: '0px' },
-              width: { sm: "65vw", xs: '75vw' },
+              width: { sm: "65vw", xs: "75vw" },
               direction: "row",
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: "center",
+              justifyContent: "center",
               py: 2,
             }}
           >
-            <Grid container xs={2.4}
-            >
+            <Grid container xs={2.4}>
               <Typography
                 borderRadius={"0px 15px 15px 5px"}
                 bgcolor="blue"
                 color="white"
                 py="4px"
-                px='6px'
+                px="6px"
                 ml={{ sm: -8.8, xs: -4.6 }}
                 mr={2}
               >
@@ -238,47 +239,43 @@ const Detail = () => {
               <Typography
                 color="grey"
                 mt={{ xs: -4, sm: 0 }}
-                ml='4px'
-                sx={{ translate: 'none' }}
-
+                ml="4px"
+                sx={{ translate: "none" }}
               >
                 I'v login issue
               </Typography>
-
             </Grid>
-            <Grid container sx={{ justifyContent: 'center' }} xs={2.4}>
+            <Grid container sx={{ justifyContent: "center" }} xs={2.4}>
               <Typography
                 borderRadius={"20px"}
                 bgcolor={"grey"}
                 color={"white"}
                 px={{ sm: 4, xs: 1 }}
-                py={{ sm: 1, xs: .5 }}
+                py={{ sm: 1, xs: 0.5 }}
                 fontSize={{ sm: 16, xs: 13 }}
               >
                 pending
               </Typography>
             </Grid>
-            <Grid container sx={{ justifyContent: 'center' }} xs={2.4} >
+            <Grid container sx={{ justifyContent: "center" }} xs={2.4}>
               <Typography
                 borderRadius={"20px"}
                 bgcolor={"blue"}
                 color={"white"}
                 px={{ sm: 2, xs: 1 }}
-                py={{ sm: 1, xs: .5 }}
+                py={{ sm: 1, xs: 0.5 }}
                 fontSize={{ sm: 16, xs: 13 }}
               >
                 detail
               </Typography>
             </Grid>
-            <Grid sx={{ justifyContent: 'center' }} xs={2.4}>
+            <Grid sx={{ justifyContent: "center" }} xs={2.4}>
               <Typography
-
-
                 sx={{
-                  color: '#000',
+                  color: "#000",
                   px: { sm: 2, xs: 0 },
-                  py: { sm: 1, xs: '2px' },
-                  fontSize: { sm: 16, xs: 12 }
+                  py: { sm: 1, xs: "2px" },
+                  fontSize: { sm: 16, xs: 12 },
                 }}
               >
                 10:15 am
@@ -286,10 +283,10 @@ const Detail = () => {
             </Grid>
             <Typography
               sx={{
-                color: '#000',
+                color: "#000",
                 px: { sm: 2, xs: 0 },
-                py: { sm: 1, xs: '2px' },
-                fontSize: { sm: 16, xs: 12 }
+                py: { sm: 1, xs: "2px" },
+                fontSize: { sm: 16, xs: 12 },
               }}
             >
               12:10 pm
@@ -297,7 +294,7 @@ const Detail = () => {
           </Grid>
         ))}
       </Box>
-    </Box >
+    </Box>
   );
 };
 
