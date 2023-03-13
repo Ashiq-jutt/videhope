@@ -16,32 +16,32 @@ const CreateNewUser = () => {
   const navigate = useNavigate();
   const [age, setAge] = React.useState("");
   const [payload, setPayload] = React.useState({
-    Name: '',
-    Email: '',
-    AccessTo: 'Accounting',
-    Password: '',
-    ConfirmPassword: '',
+    Name: "",
+    Email: "",
+    AccessTo: "Accounting",
+    Password: "",
+    ConfirmPassword: "",
     Profile: null,
-    Role: 'Staff',
-  })
+    Role: "Staff",
+  });
   const onSubmit = async () => {
     try {
-      const obj = { ...payload }
+      const obj = { ...payload };
       delete obj.ConfirmPassword;
       await onSignup(obj);
     } catch (error) {
-      console.log('error=>', error);
+      console.log("error=>", error);
     }
-  }
+  };
   return (
     <Box
       display={"flex"}
       flexDirection="column"
       justifyContent={"center"}
       alignItems={"center"}
-
     >
-      <Box className="card"
+      <Box
+        className="card"
         padding="20px"
         sx={{
           //   width: "cal(100% - 700px)",
@@ -69,7 +69,7 @@ const CreateNewUser = () => {
             alt="pic here"
             src={createNewUser}
             width="280px"
-          // height="232px"
+            // height="232px"
           />
         </Box>
 
@@ -84,7 +84,7 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, Name: event?.target?.value })
+                setPayload({ ...payload, Name: event?.target?.value });
               }}
               id="standard-basic"
               label="Name"
@@ -102,7 +102,7 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, Email: event?.target?.value })
+                setPayload({ ...payload, Email: event?.target?.value });
               }}
               id="standard-basic"
               label="Email"
@@ -135,7 +135,7 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, Password: event?.target?.value })
+                setPayload({ ...payload, Password: event?.target?.value });
               }}
               id="standard-basic"
               label="Password"
@@ -143,6 +143,13 @@ const CreateNewUser = () => {
               autoComplete="off"
             />
           </Box>
+          <input type="file"  onChange={(event) => {
+                setPayload({
+                  ...payload,
+                  Profile: event?.target?.files[0]
+                });
+              }} />
+
           <Box
             component="form"
             sx={{
@@ -154,7 +161,10 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, ConfirmPassword: event?.target?.value })
+                setPayload({
+                  ...payload,
+                  ConfirmPassword: event?.target?.value,
+                });
               }}
               id="standard-basic"
               label="ConfirmPassword"
@@ -176,12 +186,14 @@ const CreateNewUser = () => {
                 value={payload?.AccessTo}
                 label="Age"
                 onChange={(event) => {
-                  setPayload({ ...payload, AccessTo: event?.target?.value })
+                  setPayload({ ...payload, AccessTo: event?.target?.value });
                 }}
               >
-                <MenuItem value={'Accounting'}>Accounting</MenuItem>
-                <MenuItem value={'Creators Panel'}>Creators Panel</MenuItem>
-                <MenuItem value={'Customer Services'}>Customer Services</MenuItem>
+                <MenuItem value={"Accounting"}>Accounting</MenuItem>
+                <MenuItem value={"Creators Panel"}>Creators Panel</MenuItem>
+                <MenuItem value={"Customer Services"}>
+                  Customer Services
+                </MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -198,7 +210,7 @@ const CreateNewUser = () => {
                 borderRadius: "50px",
                 px: 12,
                 py: 1,
-                textTransform: 'capitalize',
+                textTransform: "capitalize",
               }}
             >
               Create
