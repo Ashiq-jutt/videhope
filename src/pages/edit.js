@@ -9,7 +9,7 @@ import { useState } from "react";
 const EditProfile = () => {
   const location = useLocation();
   const myData = location?.state?.item;
-  const { id, name, email } = myData
+  const { id, name, email, profile } = myData
   // console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", id)
   const [payload, setPayload] = React.useState({
     staffId: id,
@@ -92,7 +92,7 @@ const EditProfile = () => {
           <Box>
             <img
               alt={"pic here"}
-              src={newestPic}
+              src={profile || newestPic}
               style={{
                 height: "160px",
                 width: "160px",

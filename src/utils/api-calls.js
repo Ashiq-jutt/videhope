@@ -16,7 +16,8 @@ export const GetAll = async () => {
 export const Register = async (paylaod) => {
     const res = await PostFormData('api/staff/register', paylaod);
     if (res?.data?.succeeded) {
-        alert('successfully Added!')
+        console.log('successfully Added!')
     }
+
     return res;
 }

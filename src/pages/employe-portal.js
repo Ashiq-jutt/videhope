@@ -7,7 +7,7 @@ import { getAllStaff } from "../services/api/api-actions";
 const EmployeePortal = () => {
   const navigate = useNavigate();
   const [allStaff, setAllStaff] = React.useState([]);
-  
+
   React.useEffect(() => {
     (async () => {
       const res = await getAllStaff();
@@ -80,7 +80,7 @@ const EmployeePortal = () => {
                 <Box>
                   <img
                     alt="Pic here"
-                    src={empPic}
+                    src={item?.profile || empPic}
                     style={{
                       height: "50px",
                       width: "50px",
@@ -99,9 +99,9 @@ const EmployeePortal = () => {
                 flexDirection={"column"}
               >
                 <Button
-             l
-             
-                  onClick={   () => navigate('/detail', { state: { item: item } })}
+                  l
+
+                  onClick={() => navigate('/detail', { state: { item: item } })}
                   className="button"
                   sx={{
                     borderRadius: 10,

@@ -3,13 +3,14 @@ import axios from "axios";
 const BASE_URL = "https://videhope.azurewebsites.net/";
 const options = {
     headers: {
-        "Authorization": "bearer " + localStorage.getItem("token"),
+        "Authorization": "bearer " + localStorage.getItem("@token"),
         "Content-Type": "Application/json",
     },
 };
 const formDataOptions = {
+    // const token = localStorage.getItem('@token');
     headers: {
-        "Authorization": "bearer " + localStorage.getItem("token"),
+        "Authorization": "bearer " + localStorage.getItem("@token"),
         "Content-Type": "multipart/form-data",
     },
 };
