@@ -1,4 +1,4 @@
-import { GetData, PostData, PostFormData } from "./constant"
+import { GetData, PostData, PostFormData, PutData } from "./constant"
 
 export const login = async (paylaod) => {
     const res = await PostData('api/staff/login', paylaod);
@@ -15,6 +15,14 @@ export const GetAll = async () => {
 }
 export const Register = async (paylaod) => {
     const res = await PostFormData('api/staff/register', paylaod);
+    if (res?.data?.succeeded) {
+        console.log('successfully Added!')
+    }
+
+    return res;
+}
+export const UpdateStaff = async (paylaod) => {
+    const res = await PutData('api/staff/update-access', paylaod);
     if (res?.data?.succeeded) {
         console.log('successfully Added!')
     }

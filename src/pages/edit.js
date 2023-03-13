@@ -4,42 +4,53 @@ import React from "react";
 import { newestPic } from "../assets/images";
 import { updateStaff } from "../services/api/api-actions";
 import { useLocation } from 'react-router-dom';
-import { isBlock } from "@babel/types";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useState } from "react";
+import { UpdateStaff } from "../utils/api-calls";
 const EditProfile = () => {
   const location = useLocation();
   const myData = location?.state?.item;
   const { id, name, email, profile } = myData
-  // console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", id)
+  const [selectedValues, setSelectedValues] = useState('');
+  const [isBlock, setIsBlock] = useState(null)
   const [payload, setPayload] = React.useState({
     staffId: id,
-    accessTo: 'Accounting',
+    accessTo: '',
     isBlocked: false
   })
-  const [data, setData] = React.useState({
-    accounting: false,
-    createPanel: false,
-    createService: false,
-  })
-  const [isBlocked, setIsBlocked] = useState(false)
-  const updateData = async () => {
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    let newValues = '';
+
+    if (checked) {
+      newValues = selectedValues ? selectedValues + ',' + name : name;
+    } else {
+      newValues = selectedValues.replace(new RegExp('\\b' + name + '\\b,?', 'g'), '').replace(/^,|,$/g, '');
+    }
+    setSelectedValues(newValues)
+    setPayload({ ...payload, accessTo: selectedValues });
+
+    console.log("🚀 ~ file: edit.js:37 ~ handleCheckboxChange ~ payload:", payload)
+  };
+  const handleBlocked = (e) => {
+    const { checked } = e.target;
+    checked ? setPayload({ ...payload, isBlocked: false }) : setPayload({ ...payload, isBlocked: true })
+
+    console.log("🚀 ~ file: edit.js:42 ~ handleBlocked ~ payload:", payload)
+
+  };
+
+  const updateData = () => {
     try {
-      await updateStaff(payload);
+      UpdateStaff(payload);
+      console.log("🚀 ~ file: edit.js:50 ~ updateData ~ payload:", payload)
     } catch (error) {
-      console.log('error=>', error);
+      console.log("🚀 ~ file: edit.js:49 ~ updateData ~ error:", error)
     }
   }
 
-  const handleCheck = (e) => {
-    if (e?.target?.value == 'isBlock') {
-      console.log("🚀 ~ file: edit.js:35 ~ handleCheck ~ e.target.value:", e.target.value)
 
-
-    } else {
-      console.log("🚀 ~ file: edit.js:35 ~ handleCheck ~ val:", e.target.value)
-    }
-
-  };
 
   return (
     <Box
@@ -49,6 +60,7 @@ const EditProfile = () => {
       flexDirection="column"
     >
       <Button
+        onClick={updateData}
         sx={{
           variant: "outlined",
           color: "black",
@@ -60,7 +72,7 @@ const EditProfile = () => {
           mt: -2,
         }}
       >
-        Edit
+        Save
       </Button>
       <Box
         sx={{
@@ -142,13 +154,10 @@ const EditProfile = () => {
             <Typography m={1} fontSize={"24px"}>
               Block
             </Typography>
-            <Typography>
-              <Switch
-                value={'isBlock'}
-                onChange={handleCheck}
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            </Typography>
+            <FormControlLabel
+              // label="Option A"
+              control={<Switch name="isBlock" onChange={handleBlocked} color='primary' />}
+            />
           </Box>
           <Box
             sx={{
@@ -165,33 +174,63 @@ const EditProfile = () => {
             <Typography fontSize={14} ml={4.2}>
               Login Access
             </Typography>
-            {
-              [{ data: "Accounting", value: 'accounting' },
-              { data: "Creators Panel", value: 'createPanel' },
-              { data: "Customer Service", value: 'customerService' }].map(
-                (item) => (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      alignItems: "center",
-                      // bgcolor: "red",
-                      mt: "1px",
-                      height: "30px",
-                      p: "1px",
-                    }}
-                  >
-                    <Typography fontSize={"12px"}>Accounting</Typography>
 
-                    <Switch
-                      value={item.value}
-                      onChange={handleCheck}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                // bgcolor: "red",
+                mt: "1px",
+                height: "30px",
+                p: "1px",
+              }}
+            >
+              <Typography fontSize={"12px"}>Accounting</Typography>
+              <FormControlLabel
+                // label="Option A"
+                control={<Switch name='Accounting' onChange={handleCheckboxChange} color='primary' />}
 
-                  </Box>
-                )
-              )}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                // bgcolor: "red",
+                mt: "1px",
+                height: "30px",
+                p: "1px",
+              }}
+            >
+              <Typography fontSize={"12px"}>Creators Panel</Typography>
+              <FormControlLabel
+                // label="Option A"
+                control={<Switch name='createPanel' onChange={handleCheckboxChange} color='primary' />}
+
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                // bgcolor: "red",
+                mt: "1px",
+                height: "30px",
+                p: "1px",
+              }}
+            >
+              <Typography fontSize={"12px"}>Customer Service</Typography>
+              <FormControlLabel
+                // label="Option A"
+                control={<Switch name='ustomerService' onChange={handleCheckboxChange} color='primary' />}
+
+              />
+            </Box>
+
+
           </Box>
         </Box>
       </Box>
