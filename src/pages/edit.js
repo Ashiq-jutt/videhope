@@ -9,7 +9,7 @@ import { useState } from "react";
 const EditProfile = () => {
   const location = useLocation();
   const myData = location?.state?.item;
-  const { id } = myData
+  const { id, name, email } = myData
   // console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", id)
   const [payload, setPayload] = React.useState({
     staffId: id,
@@ -30,20 +30,17 @@ const EditProfile = () => {
     }
   }
 
-  const handleCheck = (val) => {
-    if (val == 'isBlock') {
+  const handleCheck = (e) => {
+    if (e?.target?.value == 'isBlock') {
+      console.log("🚀 ~ file: edit.js:35 ~ handleCheck ~ e.target.value:", e.target.value)
 
 
     } else {
-
+      console.log("🚀 ~ file: edit.js:35 ~ handleCheck ~ val:", e.target.value)
     }
 
   };
-  // const handleChange = (event) => {
-  //   console.log("🚀 ~ file: edit.js:10 ~ EditProfile ~ myData:", event.target.value)
 
-  //   setChecked(event.target.checked);
-  // };
   return (
     <Box
       display={"flex"}
@@ -103,12 +100,12 @@ const EditProfile = () => {
 
               }}
             />
-            <Box>
-              <Typography fontSize={"24px"} ml={4}>
-                Jackson
+            <Box sx={{ textAlign: 'center', }}>
+              <Typography fontSize={"24px"} >
+                {name}
               </Typography>
-              <Typography fontSize={"12px"} ml={2} mt={-1}>
-                Jacksonmariay@gmail.com
+              <Typography fontSize={"12px"} mt={-1} >
+                {email}
               </Typography>
             </Box>
           </Box>
@@ -147,8 +144,8 @@ const EditProfile = () => {
             </Typography>
             <Typography>
               <Switch
-                isBlock={isBlock}
-                onChange={handleCheck(isBlock)}
+                value={'isBlock'}
+                onChange={handleCheck}
                 inputProps={{ "aria-label": "controlled" }}
               />
             </Typography>
@@ -168,32 +165,33 @@ const EditProfile = () => {
             <Typography fontSize={14} ml={4.2}>
               Login Access
             </Typography>
-            {[{ data: "Accounting", value: 'accounting' },
-            { data: "Creators Panel", value: 'createPanel' },
-            { data: "Customer Service", value: 'customer' }].map(
-              (item) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    // bgcolor: "red",
-                    mt: "1px",
-                    height: "30px",
-                    p: "1px",
-                  }}
-                >
-                  <Typography fontSize={"12px"}>{item.data}</Typography>
-                  <Typography>
+            {
+              [{ data: "Accounting", value: 'accounting' },
+              { data: "Creators Panel", value: 'createPanel' },
+              { data: "Customer Service", value: 'customerService' }].map(
+                (item) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                      // bgcolor: "red",
+                      mt: "1px",
+                      height: "30px",
+                      p: "1px",
+                    }}
+                  >
+                    <Typography fontSize={"12px"}>Accounting</Typography>
+
                     <Switch
-                      data={item.value}
-                      onChange={handleCheck(item.value)}
+                      value={item.value}
+                      onChange={handleCheck}
                       inputProps={{ "aria-label": "controlled" }}
                     />
-                  </Typography>
-                </Box>
-              )
-            )}
+
+                  </Box>
+                )
+              )}
           </Box>
         </Box>
       </Box>
