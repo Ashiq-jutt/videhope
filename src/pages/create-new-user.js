@@ -7,7 +7,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewUser } from "../assets/images";
 import { onLogin, onSignup } from "../services/api/api-actions";
@@ -15,36 +15,43 @@ import { Register } from "../utils/api-calls";
 // import Masonry from "@mui/lab/Masonry";
 const CreateNewUser = () => {
   const navigate = useNavigate();
-  const [age, setAge] = React.useState("");
-  const [imageDataURL, setImageDataURL] = React.useState('');
+
+  const [image, setImage] = React.useState(null);
+  const [imageUrl, setImageUrl] = React.useState("");
   const [payload, setPayload] = React.useState({
     Name: '',
     Email: '',
     AccessTo: '',
     Password: '',
     ConfirmPassword: '',
-    Profile: imageDataURL,
+    Profile: '',
     Role: 'Staff',
   })
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setImageDataURL(reader.result);
-    };
     reader.readAsDataURL(file);
-  };
+    reader.onload = () => {
+      const base64String = reader.result;
+      setImage(base64String);
+      const im = URL.createObjectURL(file);
+      setImageUrl(im);
+      setPayload(prevState => ({ ...prevState, "Profile": im }));
+    }
+
+  }
+
 
   const onSubmit = async () => {
     try {
-      const obj = { ...payload }
+      const obj = { ...payload, Profile: imageUrl }
       delete obj.ConfirmPassword;
-      // delete obj.Role;
-      // console.log("🚀 ~ file: create-new-user.js:31 ~ onSubmit ~ obj:", obj)
+      console.log("🚀 ~ file: create-new-user.js:31 ~ onSubmit ~ obj:", obj)
       const res = await Register(obj);
       console.log("🚀 ~ file: create-new-user.js:34 ~ onSubmit ~ res:", res)
-
+      navigate("/dashboard")
     } catch (error) {
       if (error?.response?.data?.Message == 'Account Already Exist With Given Email') {
         alert('Account Already Exist With Given Email')
@@ -88,7 +95,7 @@ const CreateNewUser = () => {
         >
           <img
             alt="pic here"
-            src={createNewUser}
+            src={imageUrl || createNewUser}
             width="280px"
           // height="232px"
           />
@@ -164,7 +171,7 @@ const CreateNewUser = () => {
               autoComplete="off"
             />
           </Box>
-          <input type="file" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
           {/* {imageDataURL && <img src={imageDataURL} alt="Preview" />} */}
           <Box
             component="form"
@@ -206,8 +213,8 @@ const CreateNewUser = () => {
                 }}
               >
                 <MenuItem value={"Accounting"}>Accounting</MenuItem>
-                <MenuItem value={"Creators Panel"}>Creators Panel</MenuItem>
-                <MenuItem value={"Customer Services"}>
+                <MenuItem value={"CreatorsPanel"}>Creators Panel</MenuItem>
+                <MenuItem value={"CustomerServices"}>
                   Customer Services
                 </MenuItem>
               </Select>

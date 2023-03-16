@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { employedPortal, empPic } from "../assets/images";
 import "../css/employe-portal.css";
 import { getAllStaff } from "../services/api/api-actions";
+import { GetAll } from "../utils/api-calls";
 const EmployeePortal = () => {
   const navigate = useNavigate();
   const [allStaff, setAllStaff] = React.useState([]);
 
   React.useEffect(() => {
     (async () => {
-      const res = await getAllStaff();
+      const res = await GetAll();
       console.log("res in screen=>", res);
       setAllStaff(res?.data || []);
     })();
@@ -79,8 +80,8 @@ const EmployeePortal = () => {
               <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
                 <Box>
                   <img
-                    alt="Pic here"
-                    src={item?.profile || empPic}
+                    alt="Staff Image"
+                    src={item?.image?.uri || empPic}
                     style={{
                       height: "50px",
                       width: "50px",
@@ -99,8 +100,6 @@ const EmployeePortal = () => {
                 flexDirection={"column"}
               >
                 <Button
-                  l
-
                   onClick={() => navigate('/detail', { state: { item: item } })}
                   className="button"
                   sx={{

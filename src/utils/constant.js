@@ -18,6 +18,10 @@ export const GetData = async (url) => {
     const { data } = await axios.get(`${BASE_URL}/${url}`, options);
     return data;
 };
+export const GetFormData = async (url) => {
+    const { data } = await axios.get(`${BASE_URL}/${url}`, formDataOptions);
+    return data;
+};
 export const PostData = async (url, payload) => {
     const { data } = await axios.post(`${BASE_URL}/${url}`, payload, options);
     return data;

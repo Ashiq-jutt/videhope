@@ -10,18 +10,26 @@ import {
 } from "@mui/material";
 import React from "react";
 import { reportedImg } from "../assets/images";
+import UserCard from "../components/video-crd";
 import "../css/content-report.css";
+import { GetReportedContent } from "../utils/api-calls";
 // import Masonry from "@mui/lab/Masonry";
 const ContentReport = () => {
-  const [checked, setChecked] = React.useState(true);
-  const [checked1, setChecked1] = React.useState(true);
+  const [allStaff, setAllStaff] = React.useState([]);
+  const [uploadedByUser, reportedByUser, content] = allStaff;
+  console.log("🚀 ~ file: content-report.js:19 ~ ContentReport ~ allStaff:", allStaff)
+  console.log("🚀 ~ file: content-report.js:19 ~ ContentReport ~ content:", content)
+  console.log("🚀 ~ file: content-report.js:19 ~ ContentReport ~ reportedByUser:", reportedByUser)
+  console.log("🚀 ~ file: content-report.js:19 ~ ContentReport ~ uploadedByUser:", uploadedByUser)
+  var videoUrl = ''
+  React.useEffect(() => {
+    (async () => {
+      const res = await GetReportedContent();
+      console.log("res in servises callss=>", res?.data);
+      setAllStaff(res?.data || []);
+    })();
 
-  const handleChange1 = (event) => {
-    setChecked1(event.target.checked1);
-  };
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
+  }, []);
   return (
     <>
       <div className="col-md-12">
@@ -42,7 +50,7 @@ const ContentReport = () => {
           style={{
             flexDirection: "row",
             flexWrap: "wrap",
-            
+
             gap: 15,
             boxShadow: "1px 1px 5px  #000",
 
@@ -55,7 +63,7 @@ const ContentReport = () => {
               className="card"
               style={{ boxShadow: "1px 1px 5px  #000", marginTop: "10px" }}
             >
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -103,8 +111,11 @@ const ContentReport = () => {
                 >
                   Content Reported
                 </Button>
-              </Box>
+              </Box> */}
+
+              <UserCard name='Asiq' videoUrl={videoUrl} />
             </div>
+
           ))}
         </div>
       </div>

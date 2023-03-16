@@ -1,4 +1,4 @@
-import { GetData, PostData, PostFormData, PutData } from "./constant"
+import { GetData, GetFormData, PostData, PostFormData, PutData } from "./constant"
 
 export const login = async (paylaod) => {
     const res = await PostData('api/staff/login', paylaod);
@@ -10,7 +10,7 @@ export const login = async (paylaod) => {
     return res;
 }
 export const GetAll = async () => {
-    const res = await GetData('api/staff/get-all');
+    const res = await GetFormData('api/staff/get-all');
     return res;
 }
 export const Register = async (paylaod) => {
@@ -27,5 +27,14 @@ export const UpdateStaff = async (paylaod) => {
         console.log('successfully Added!')
     }
 
+    return res;
+}
+
+export const GetCustomeServices = async () => {
+    const res = await GetData('api/admin/get-customer-service-counts');
+    return res;
+}
+export const GetReportedContent = async () => {
+    const res = await GetData('api/admin/get-reported-content');
     return res;
 }

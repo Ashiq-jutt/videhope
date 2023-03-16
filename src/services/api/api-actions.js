@@ -1,6 +1,7 @@
 
 import { getData, postData, postFormData, putData } from '.';
 import { setUserInfo } from '../../store/reducers/user-reducer';
+// import { GetFormData } from '../../utils/constant';
 import { URLS } from './api-urls';
 //
 export const onSignup = async (values) => {

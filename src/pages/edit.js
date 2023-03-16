@@ -8,36 +8,71 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useState } from "react";
 import { UpdateStaff } from "../utils/api-calls";
 const EditProfile = () => {
+  const [accounting, setAccounting] = React.useState(false);
+  const [creatorPanel, setCreatorPanel] = React.useState(false);
+  const [customerService, setCustomerService] = React.useState(false);
   const location = useLocation();
   const myData = location?.state?.item;
-  const { id, name, email, profile } = myData
+  const { id, name, email, profile, accessTo } = myData
   const [selectedValues, setSelectedValues] = useState('');
   const [isBlock, setIsBlock] = useState(null)
   const [payload, setPayload] = React.useState({
     staffId: id,
-    accessTo: '',
-    isBlocked: false
+    accessTo: accessTo,
+    isBlocked: true
   })
+  React.useEffect(() => {
+    let acc = accessTo.split(',')
+    console.log("🚀 ~ file: edit.js:26 ~ React.useEffect ~ acc:", acc)
+    for (let i = 0; i < acc.length; i++) {
+      if (acc[i] == 'CreatorsPanel' || 'Creators Panel') {
+        return setCreatorPanel(true)
+      }
+
+      if (acc[i] == 'Accounting') {
+        return setAccounting(true)
+      }
+
+      if (acc[i] == 'CustomerServices' || 'Customer Services') {
+        return setCustomerService(true)
+      }
+
+
+    }
+    console.log("🚀 ~ file: edit.js:26 ~ React.useEffect ~ acc:", acc)
+
+  }, [])
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     let newValues = '';
-
+    if (name == 'Accounting') {
+      return setAccounting(!accounting)
+    }
+    if (name == 'CreatorsPanel') {
+      return setCreatorPanel(!creatorPanel)
+    }
+    if (name == 'CustomerServices') {
+      return setCustomerService(!customerService)
+    }
     if (checked) {
+
       newValues = selectedValues ? selectedValues + ',' + name : name;
     } else {
       newValues = selectedValues.replace(new RegExp('\\b' + name + '\\b,?', 'g'), '').replace(/^,|,$/g, '');
     }
     setSelectedValues(newValues)
-    setPayload({ ...payload, accessTo: selectedValues });
+    setPayload((preState) => {
+      return ({
+        ...preState, accessTo: selectedValues
+      })
+    })
 
     console.log("🚀 ~ file: edit.js:37 ~ handleCheckboxChange ~ payload:", payload)
   };
-  const handleBlocked = (e) => {
-    const { checked } = e.target;
-    checked ? setPayload({ ...payload, isBlocked: false }) : setPayload({ ...payload, isBlocked: true })
-
-    console.log("🚀 ~ file: edit.js:42 ~ handleBlocked ~ payload:", payload)
+  const handleBlocked = () => {
+    setPayload({ ...payload, isBlocked: !payload.isBlocked })
+    console.log("🚀 ~ file: edit.js:183 ~ EditProfile ~ isBlocked:", payload)
 
   };
 
@@ -103,8 +138,10 @@ const EditProfile = () => {
         >
           <Box>
             <img
-              alt={"pic here"}
-              src={profile || newestPic}
+              alt={"Profile here"}
+              // src={item?.image?.uri || empPic}
+
+              src={profile?.uri || newestPic}
               style={{
                 height: "160px",
                 width: "160px",
@@ -156,7 +193,8 @@ const EditProfile = () => {
             </Typography>
             <FormControlLabel
               // label="Option A"
-              control={<Switch name="isBlock" onChange={handleBlocked} color='primary' />}
+              control={<Switch name="isBlock"
+                onChange={handleBlocked} color='primary' />}
             />
           </Box>
           <Box
@@ -188,8 +226,7 @@ const EditProfile = () => {
             >
               <Typography fontSize={"12px"}>Accounting</Typography>
               <FormControlLabel
-                // label="Option A"
-                control={<Switch name='Accounting' onChange={handleCheckboxChange} color='primary' />}
+                control={<Switch checked={accounting} name='Accounting' onChange={handleCheckboxChange} color='primary' />}
 
               />
             </Box>
@@ -207,7 +244,7 @@ const EditProfile = () => {
               <Typography fontSize={"12px"}>Creators Panel</Typography>
               <FormControlLabel
                 // label="Option A"
-                control={<Switch name='createPanel' onChange={handleCheckboxChange} color='primary' />}
+                control={<Switch checked={creatorPanel} name='CreatorsPanel' onChange={handleCheckboxChange} color='primary' />}
 
               />
             </Box>
@@ -222,10 +259,10 @@ const EditProfile = () => {
                 p: "1px",
               }}
             >
-              <Typography fontSize={"12px"}>Customer Service</Typography>
+              <Typography fontSize={"12px"}>Customer Services</Typography>
               <FormControlLabel
                 // label="Option A"
-                control={<Switch name='ustomerService' onChange={handleCheckboxChange} color='primary' />}
+                control={<Switch checked={customerService} name='CustomerServices' onChange={handleCheckboxChange} color='primary' />}
 
               />
             </Box>
