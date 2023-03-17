@@ -20,14 +20,20 @@ import UserData from "../components/userData";
 import profile from "../assets/profile.svg";
 import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { Image } from "@mui/icons-material";
 import { serviceImg } from "../assets/images";
+import { useState } from "react";
 function valuetext(value) {
   return `${value}°C`;
 }
 function UserProfile() {
+  const location = useLocation();
   const [check, setCheck] = React.useState(false);
   const [ide, setIde] = React.useState("");
+  const user = location?.state?.item;
+  const navigate = useNavigate()
   const handleCheck = (id) => {
     setIde(id);
     setCheck(!check);
@@ -77,7 +83,7 @@ function UserProfile() {
       content: "'$125.56'",
     },
   ];
-  const [value, setValue] = React.useState([20, 37]);
+  const [value, setValue] = useState([20, 37]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,9 +96,9 @@ function UserProfile() {
         alignItems="center"
         spacing={4}
         mt={"80px"}
-        // ml={"20px"}
+      // ml={"20px"}
       >
-        <img src={SVG.left} />
+        <img src={SVG.left} onClick={() => navigate("/accountReported")} />
         <Typography
           sx={{ fontFamily: "Roboto", fontSize: "42px", fontWeight: "700" }}
         >
@@ -116,15 +122,15 @@ function UserProfile() {
             justifyContent: "center",
           }}
         >
-          <img src={SVG.profile} />
-          <Typography>@jacob_w</Typography>
+          <img src={user?.reportedUser?.profile?.uri || SVG.profile} />
+          <Typography>{user?.reportedUser?.userName || '@jacob_w'}</Typography>
         </Stack>
         <Grid
           container
           direction={"row"}
           justifyContent={"center"}
           alignItems={"center"}
-          // backgroundColor={"red"}
+        // backgroundColor={"red"}
         >
           <Stack
             sx={{
@@ -136,7 +142,7 @@ function UserProfile() {
             <Typography
               sx={{ color: "#000000", fontFamily: "Roboto", fontSize: "22px" }}
             >
-              15
+              {user?.reportedUser?.following}
             </Typography>
             <Typography
               sx={{ color: "#000000", fontFamily: "Roboto", fontSize: "13px" }}
@@ -154,7 +160,7 @@ function UserProfile() {
             <Typography
               sx={{ color: "#000000", fontFamily: "Roboto", fontSize: "22px" }}
             >
-              38
+              {user?.reportedUser?.followers}
             </Typography>
             <Typography
               sx={{ color: "#000000", fontFamily: "Roboto", fontSize: "13px" }}
@@ -228,6 +234,7 @@ function UserProfile() {
                 // border: "5px dashed green",
                 borderColor: "#000000",
                 ml: 2,
+                my: { xs: '4px', sm: '2px' }
               }}
             >
               {item}

@@ -1,106 +1,40 @@
+import { CardMedia } from "@material-ui/core";
 import {
   Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
   Grid,
-  Switch,
   Box,
   Typography,
-  TextField,
-  Paper,
-  TableContainer,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { line, creatorImage } from "../assets/images";
 import profile from "../assets/profile.svg";
+import Loading from "../components/Loading";
+import { GetReportedUser } from "../utils/api-calls";
 const AccountReported = () => {
-  var arr = [
-    {
-      id: 1,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 1,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 1,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 1,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 1,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 2,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 3,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 4,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 5,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 6,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-    {
-      id: 7,
-      profile: creatorImage,
-      email: "rosemary@gmail.com",
-      creatorName: "Rose Marry",
-      address: "20 Cooper Square, New York, NY 10003, USA",
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [reportedAccount, setReportedAccount] = useState([]);
+  useEffect(() => {
+
+    (async () => {
+      setLoading(true)
+
+      const res = await GetReportedUser();
+      console.log("res in reportAccount calls=>", res?.data);
+      setReportedAccount(res?.data || []);
+      setLoading(false)
+
+    })();
+
+  }, []);
+
   const navigate = useNavigate();
+  if (loading) return <Loading />;
 
   return (
     <Box
@@ -109,8 +43,6 @@ const AccountReported = () => {
       alignItems={"center"}
       flexDirection="column"
       px={"10%"}
-      // m={20}
-      // boxShadow="1px 1px 10px  #000"
     >
       <Button
         sx={{
@@ -159,8 +91,8 @@ const AccountReported = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {arr.map((row) => (
-              <TableRow key={row.id}>
+            {reportedAccount?.map((row, index) => (
+              <TableRow key={index}>
                 <TableCell
                   sx={{
                     align: "center",
@@ -168,11 +100,14 @@ const AccountReported = () => {
                 >
                   <Grid container alignItems={"center"} ml={-2.5}>
                     <img
-                      src={row.profile}
-                      width={"38px"}
-                      // onClick={() => navigate("/userProfile")}
+                      src={row?.reportedUser?.profile?.uri || creatorImage}
+                      width="38px"
+                      // onClick={() => navigate('/userProfile')}
+                      onClick={() => navigate('/userProfile', { state: { item: row } })}
+
+                      alt='img'
                     />
-                    <Typography ml={"10px"}>{`${row.creatorName}`}</Typography>
+                    <Typography ml={"10px"}>{`${row?.reportedUser?.userName}`}</Typography>
                   </Grid>
                 </TableCell>
                 <TableCell></TableCell>
@@ -180,14 +115,14 @@ const AccountReported = () => {
                   align="center"
                   sx={{ boxShadow: "0px 0px 4px  #000" }}
                 >
-                  {row.email}
+                  {`${row?.reportedUser?.email}`}
                 </TableCell>
                 <TableCell></TableCell>
                 <TableCell
                   align="center"
                   sx={{ boxShadow: "0px 0px 4px  #000", m: "10px" }}
                 >
-                  {row.address}
+                  {`${row?.reportedUser?.email}`}
                 </TableCell>
               </TableRow>
             ))}

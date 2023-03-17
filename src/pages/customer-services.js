@@ -8,21 +8,27 @@ import { useNavigate } from "react-router-dom";
 import {
   customerServices,
 } from "../assets/images";
+import Loading from "../components/Loading";
 import { GetCustomeServices } from "../utils/api-calls";
 // import Masonry from "@mui/lab/Masonry";
 const CustomerService = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false)
   const [allStaff, setAllStaff] = React.useState({});
   const { messages, reportedContents, reportedUsers } = allStaff;
 
   React.useEffect(() => {
+
     (async () => {
+      setLoading(true)
       const res = await GetCustomeServices();
       console.log("res in servises callss=>", res?.data);
       console.log("res in servises callss=>", res?.data?.messages);
       setAllStaff(res?.data || {});
+      setLoading(false)
     })();
   }, []);
+  if (loading) return <Loading />;
   return (
     <Box
       display={"flex"}
@@ -74,6 +80,7 @@ const CustomerService = () => {
               </Typography>
               <Button
                 onClick={() => navigate(item.route)}
+                // onClick={() => navigate(item.route, { state: { item: item.total } })}
                 sx={{
                   bgcolor: "grey",
                   color: "white",

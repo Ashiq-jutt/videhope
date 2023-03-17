@@ -38,3 +38,11 @@ export const GetReportedContent = async () => {
     const res = await GetData('api/admin/get-reported-content');
     return res;
 }
+export const GetReportedUser = async () => {
+    const res = await GetData('api/admin/get-reported-users');
+    return res;
+}
+export const GetChatList = async () => {
+    const res = await GetData('api/admin/get-chat-list');
+    return res;
+}

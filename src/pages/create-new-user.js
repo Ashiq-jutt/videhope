@@ -1,4 +1,3 @@
-import { Password } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -16,17 +15,18 @@ import { Register } from "../utils/api-calls";
 // import Masonry from "@mui/lab/Masonry";
 const CreateNewUser = () => {
   const navigate = useNavigate();
-  const [age, setAge] = React.useState("");
-  const [imageDataURL, setImageDataURL] = React.useState("");
+
+  const [image, setImage] = React.useState(null);
+  const [imageUrl, setImageUrl] = React.useState("");
   const [payload, setPayload] = React.useState({
-    Name: "",
-    Email: "",
-    AccessTo: "",
-    Password: "",
-    ConfirmPassword: "",
-    Profile: imageDataURL,
-    Role: "Staff",
-  });
+    Name: '',
+    Email: '',
+    AccessTo: '',
+    Password: '',
+    ConfirmPassword: '',
+    Profile: '',
+    Role: 'Staff',
+  })
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -45,49 +45,31 @@ const CreateNewUser = () => {
 
 
   const onSubmit = async () => {
-    if (payload.Password == payload.ConfirmPassword) {
-      if (
-        payload.Name != "" &&
-        payload.Email != "" &&
-        payload.Password != "" &&
-        payload.ConfirmPassword != "" &&
-        payload.Role != ""
-      ) {
-        try {
-          const obj = { ...payload };
-          delete obj.ConfirmPassword;
-          // delete obj.Role;
-          // console.log("🚀 ~ file: create-new-user.js:31 ~ onSubmit ~ obj:", obj)
-          const res = await Register(obj);
-          console.log(
-            "🚀 ~ file: create-new-user.js:34 ~ onSubmit ~ res:",
-            res
-          );
-          navigate("/dashboard")
-        } catch (error) {
-          if (
-            error?.response?.data?.Message ==
-            "Account Already Exist With Given Email"
-          ) {
-            alert("Account Already Exist With Given Email");
-          }
-        }
-      } else {
-        alert("text field is empty");
+    try {
+      const obj = { ...payload, Profile: imageUrl }
+      delete obj.ConfirmPassword;
+      console.log("🚀 ~ file: create-new-user.js:31 ~ onSubmit ~ obj:", obj)
+      const res = await Register(obj);
+      console.log("🚀 ~ file: create-new-user.js:34 ~ onSubmit ~ res:", res)
+      navigate("/dashboard")
+    } catch (error) {
+      if (error?.response?.data?.Message == 'Account Already Exist With Given Email') {
+        alert('Account Already Exist With Given Email')
       }
-    } else {
-      alert("password not Matched");
+
+
+
     }
-  };
+  }
   return (
     <Box
       display={"flex"}
       flexDirection="column"
       justifyContent={"center"}
       alignItems={"center"}
+
     >
-      <Box
-        className="card"
+      <Box className="card"
         padding="20px"
         sx={{
           //   width: "cal(100% - 700px)",
@@ -112,8 +94,8 @@ const CreateNewUser = () => {
           }}
         >
           <img
-            alt="picture here"
-            src={imageDataURL || createNewUser}
+            alt="pic here"
+            src={imageUrl || createNewUser}
             width="280px"
           // height="232px"
           />
@@ -130,7 +112,7 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, Name: event?.target?.value });
+                setPayload({ ...payload, Name: event?.target?.value })
               }}
               id="standard-basic"
               label="Name"
@@ -148,7 +130,7 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, Email: event?.target?.value });
+                setPayload({ ...payload, Email: event?.target?.value })
               }}
               id="standard-basic"
               label="Email"
@@ -181,7 +163,7 @@ const CreateNewUser = () => {
           >
             <TextField
               onChange={(event) => {
-                setPayload({ ...payload, Password: event?.target?.value });
+                setPayload({ ...payload, Password: event?.target?.value })
               }}
               id="standard-basic"
               label="Password"
@@ -189,6 +171,7 @@ const CreateNewUser = () => {
               autoComplete="off"
             />
           </Box>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
           {/* {imageDataURL && <img src={imageDataURL} alt="Preview" />} */}
           <Box
             component="form"
@@ -212,10 +195,6 @@ const CreateNewUser = () => {
               autoComplete="off"
             />
           </Box>
-          <Box sx={{ paddingBottom: 3 }}>
-            <input type="file" onChange={handleImageChange} />
-          </Box>
-
           <Box mb={2}>
             <FormControl
               sx={{ minWidth: "273px", borderColor: "white" }}
@@ -254,7 +233,7 @@ const CreateNewUser = () => {
                 borderRadius: "50px",
                 px: 12,
                 py: 1,
-                textTransform: "capitalize",
+                textTransform: 'capitalize',
               }}
             >
               Create

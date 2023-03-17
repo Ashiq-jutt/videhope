@@ -1,114 +1,116 @@
-import { Paper } from "@material-ui/core";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { Box } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import Loading from "../components/Loading";
+import { useEffect } from "react";
+import { GetChatList } from "../utils/api-calls";
+import ChatApp from "../components/chat-gpt";
 
-import { TextInput } from "../components/chat-input";
-import { MessageLeft, MessageRight } from "../components/message";
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    paper: {
-      width: "80vw",
-      height: "80vh",
-      maxWidth: "500px",
-      maxHeight: "700px",
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      position: "relative",
-    },
-    paper2: {
-      width: "80vw",
-      maxWidth: "500px",
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      position: "relative",
-    },
-    container: {
-      width: "100%",
-      height: "100vh",
-      display: "flex",
-      // alignItems: "center",
-      // justifyContent: "center",
-      // backgroundColor: 'red'
-    },
-    messagesBody: {
-      width: "calc( 100% - 20px )",
-      margin: 10,
-      overflowY: "scroll",
-      height: "calc( 100% - 80px )",
-    },
-  })
-);
-
-export default function App() {
+const Chat = () => {
+  const [loading, setLoading] = useState(false)
+  const [messageList, setMessageList] = React.useState({});
   const classes = useStyles();
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  const onMessageSend = () => {
+    if (input === "") {
+      return;
+    }
+
+    setMessages((msgs) => [...msgs, input]);
+    setInput("");
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onMessageSend();
+    }
+  };
+  useEffect(() => {
+
+    (async () => {
+      setLoading(true)
+      const res = await GetChatList();
+      console.log("res in servises callss=>", res?.data);
+      setMessageList(res?.data || {});
+      setLoading(false)
+    })();
+  }, []);
+  if (loading) return <Loading />;
   return (
-    <Box className={classes.container}>
-      <Box className={classes.paper}></Box>
-      <Paper className={classes.paper} zDepth={2}>
-        <Paper id="style-1" className={classes.messagesBody}>
-          <MessageLeft
-            message="あめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName=""
-            avatarDisp={true}
-          />
-          <MessageLeft
-            message="xxxxxhttps://yahoo.co.jp xxxxxxxxxあめんぼあかいなあいうえおあいうえおかきくけこさぼあかいなあいうえおあいうえおかきくけこさぼあかいなあいうえおあいうえおかきくけこさいすせそ"
-            timestamp="MM/DD 00:00"
-            photoURL=""
-            displayName="テスト"
-            avatarDisp={false}
-          />
-          <MessageRight
-            message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
-            avatarDisp={true}
-          />
-          <MessageRight
-            message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
-            avatarDisp={false}
-          />
-          <MessageRight
-            message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
-            avatarDisp={true}
-          />
-          <MessageRight
-            message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
-            avatarDisp={false}
-          />
-          <MessageRight
-            message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
-            avatarDisp={true}
-          />
-          <MessageRight
-            message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
-            photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
-            avatarDisp={false}
-          />
-        </Paper>
-        <TextInput />
-      </Paper>
-    </Box>
+    <div
+      className={classes.root}
+      style={{
+        justifyContent: "center",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <div className={classes.chatSection} style={{ width: "40%" }}>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={
+              index % 2 === 0 ? classes.chatMessage : classes.chatMessageRight
+            }
+          >
+            <div>
+              <p>{msg}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={classes.chatInput}>
+        <TextField
+          fullWidth
+          label="Message"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
+
+        <Button variant="contained" color="primary" onClick={onMessageSend}>
+          Send
+        </Button>
+      </div>
+    </div>
+    // <ChatApp />
   );
 }
+
+export default Chat;
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: theme.spacing(1),
+    display: "flex",
+    flexDirection: "column",
+  },
+  chatSection: {},
+  chatMessage: {
+    backgroundColor: "aqua",
+    borderRadius: "10px",
+    padding: "10px",
+    margin: "10px 0",
+    alignSelf: "flex-start",
+    width: "50%",
+    overflowWrap: 'break-word'
+  },
+  chatMessageRight: {
+    backgroundColor: "#008080",
+    borderRadius: "10px",
+    padding: "10px",
+    margin: "10px 0",
+    justifyContent: "flex-end",
+    width: "50%",
+    marginLeft: "50%",
+    overflowWrap: 'break-word'
+  },
+  chatInput: {
+    marginTop: "auto",
+  },
+}));
