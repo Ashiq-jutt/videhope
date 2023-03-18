@@ -6,14 +6,16 @@ import Loading from "../components/Loading";
 import { useEffect } from "react";
 import { GetChatList } from "../utils/api-calls";
 import ChatApp from "../components/chat-gpt";
+import { Card } from "@material-ui/core";
 
 const Chat = () => {
   const [loading, setLoading] = useState(false)
-  const [messageList, setMessageList] = React.useState({});
+  const [messageList, setMessageList] = React.useState([]);
   const classes = useStyles();
   const [messages, setMessages] = useState([]);
+  console.log("messsssage====>",messages)
   const [input, setInput] = useState("");
-
+const arryUSer=["ALtaf","Ashiq","Alam","Aslam"];
   const onMessageSend = () => {
     if (input === "") {
       return;
@@ -38,8 +40,33 @@ const Chat = () => {
       setLoading(false)
     })();
   }, []);
+
+  const handleMessage=(item) => {
+    setMessages(item)
+  }
   if (loading) return <Loading />;
   return (
+    <div className="d-flex">
+      <div className="col-md-6" >
+        {messageList?.map((item)=>{
+          return (
+            <Card onClick={()=>handleMessage(item)} className="col-md-8" style={{marginTop:'10px',padding:'10px'}}>
+            <h5>{item.userName}</h5>
+          <div className="d-flex" style={{justifyContent:'space-between'}}>
+          <p>{item?.lastMessage?.description}</p>
+          <p>{item?.lastMessage?.createdAt}</p>
+          </div>
+           
+          
+      
+               </Card>
+          )
+        })
+
+        }
+      
+      </div>
+      <div className="col-md-6" style={{backgroundColor:'green'}}>
     <div
       className={classes.root}
       style={{
@@ -48,8 +75,9 @@ const Chat = () => {
         alignItems: "center",
       }}
     >
-      <div className={classes.chatSection} style={{ width: "40%" }}>
-        {messages.map((msg, index) => (
+      <div className={classes.chatSection} style={{ width: "50%" }}>
+        {arryUSer?.map((msg, index) => {
+          return(
           <div
             key={index}
             className={
@@ -60,7 +88,7 @@ const Chat = () => {
               <p>{msg}</p>
             </div>
           </div>
-        ))}
+        )})}
       </div>
 
       <div className={classes.chatInput}>
@@ -77,6 +105,9 @@ const Chat = () => {
         </Button>
       </div>
     </div>
+    </div>
+    </div>
+    
     // <ChatApp />
   );
 }
