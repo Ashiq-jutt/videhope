@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useState } from "react";
 import { UpdateStaff } from "../utils/api-calls";
+import { IMAGE_BASE_URL } from "../utils/constant";
+import Avatar from "react-avatar";
 const EditProfile = () => {
   const [accounting, setAccounting] = React.useState(false);
   const [creatorPanel, setCreatorPanel] = React.useState(false);
@@ -137,18 +139,24 @@ const EditProfile = () => {
           }}
         >
           <Box>
-            <img
+
+
+
+            {profile != '' ? (<img
               alt={"Profile here"}
               // src={item?.image?.uri || empPic}
 
-              src={profile?.uri || newestPic}
+              src={`${IMAGE_BASE_URL}${profile}` || newestPic}
               style={{
                 height: "160px",
                 width: "160px",
                 borderRadius: "100px",
 
               }}
-            />
+            />) : <Avatar name={name} size="180" round={true} />}
+
+
+
             <Box sx={{ textAlign: 'center', }}>
               <Typography fontSize={"24px"} >
                 {name}

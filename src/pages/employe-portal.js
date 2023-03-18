@@ -5,6 +5,8 @@ import { employedPortal, empPic } from "../assets/images";
 import "../css/employe-portal.css";
 import { getAllStaff } from "../services/api/api-actions";
 import { GetAll } from "../utils/api-calls";
+import { IMAGE_BASE_URL } from "../utils/constant";
+import Avatar from "react-avatar";
 const EmployeePortal = () => {
   const navigate = useNavigate();
   const [allStaff, setAllStaff] = React.useState([]);
@@ -50,9 +52,9 @@ const EmployeePortal = () => {
         </Button>
       </Grid>
       <Grid container justifyContent="center">
-        {allStaff?.map((item) => (
+        {allStaff?.map((item, index) => (
           <Box
-            key={item?.id}
+            key={index}
             className="card"
             sx={{
               boxShadow: "3px 4px 10px  #000",
@@ -79,16 +81,16 @@ const EmployeePortal = () => {
             >
               <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
                 <Box>
-                  <img
-                    alt="Staff Image"
-                    src={item?.image?.uri || empPic}
+                  {`${item?.profile}` != '' ? (<img
+                    // alt="Staff Image"
+                    src={`${IMAGE_BASE_URL}${item?.profile}`}
                     style={{
                       height: "50px",
                       width: "50px",
                       borderRadius: "100px",
                       // resize: "-moz-initial",
                     }}
-                  />
+                  />) : <Avatar name={item?.name} size="50" round={true} />}
                 </Box>
                 <Typography className="text" ml={"5px"}>
                   {item?.name}

@@ -17,7 +17,8 @@ const CreateNewUser = () => {
   const navigate = useNavigate();
 
   const [image, setImage] = React.useState(null);
-  const [imageUrl, setImageUrl] = React.useState("");
+  const [imageUrl, setImageUrl] = React.useState("")
+  const [file, setFile] = React.useState();
   const [payload, setPayload] = React.useState({
     Name: '',
     Email: '',
@@ -29,28 +30,22 @@ const CreateNewUser = () => {
   })
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64String = reader.result;
-      setImage(base64String);
-      const im = URL.createObjectURL(file);
-      setImageUrl(im);
-      setPayload(prevState => ({ ...prevState, "Profile": im }));
-    }
-
+    setFile(event.target.files[0]);
   }
 
 
   const onSubmit = async () => {
     try {
-      const obj = { ...payload, Profile: imageUrl }
-      delete obj.ConfirmPassword;
-      console.log("🚀 ~ file: create-new-user.js:31 ~ onSubmit ~ obj:", obj)
-      const res = await Register(obj);
-      console.log("🚀 ~ file: create-new-user.js:34 ~ onSubmit ~ res:", res)
+      var formDate = new FormData();
+      formDate.append("Profile", file);
+      formDate.append("Role", payload.Role);
+      formDate.append("Password", payload.Password);
+      formDate.append("AccessTo", payload.AccessTo);
+      formDate.append("Name", payload.Name);
+      formDate.append("Email", payload.Email);
+
+      const res = await Register(formDate);
       navigate("/dashboard")
     } catch (error) {
       if (error?.response?.data?.Message == 'Account Already Exist With Given Email') {
@@ -95,7 +90,7 @@ const CreateNewUser = () => {
         >
           <img
             alt="pic here"
-            src={imageUrl || createNewUser}
+            src={createNewUser}
             width="280px"
           // height="232px"
           />
