@@ -5,6 +5,7 @@ import { creatorImg } from "../assets/images";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import { GetRequestType } from "../utils/api-calls";
+import { IMAGE_BASE_URL } from "../utils/constant";
 
 const Newest = () => {
   const navigate = useNavigate();
@@ -40,8 +41,8 @@ const Newest = () => {
       }}
     >
       {/* <Typography textAlign={"center"}>Newest</Typography> */}
-      {[1, 2, 3, 3, 4, 3, 4, 4].map((item, index) => (
-        <Grid mx={{ sm: "20px", xs: "4px" }} my="8px">
+      {allRequest?.map((item, index) => (
+        <Grid mx={{ sm: "20px", xs: "4px" }} my="8px" key={index}>
           <Box
             sx={{
               display: "flex",
@@ -51,18 +52,20 @@ const Newest = () => {
           >
             <Box mr={"10px"}>
               <img
-                src={creatorImg}
+                src={`${IMAGE_BASE_URL}${item?.userImage}`}
                 style={{
-                  height: { sm: 60, xs: 210 },
-                  width: { sm: 60, xs: 210 },
+                  height: '140px',
+                  width: '140px',
                   borderRadius: "33px",
                 }}
               />
             </Box>
             <Box flexDirection={"column"} display="flex">
-              @jason
+              {item?.username}
               <Button
-                onClick={() => navigate("/newestDetail")}
+                // onClick={() => navigate("/newestDetail")}
+                onClick={() => navigate('/newestDetail', { state: { item: item, myData: myData } })}
+
                 sx={{
                   variant: "outlined",
                   color: "white",

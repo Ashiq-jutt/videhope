@@ -25,6 +25,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Image } from "@mui/icons-material";
 import { serviceImg } from "../assets/images";
 import { useState } from "react";
+import { IMAGE_BASE_URL } from "../utils/constant";
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -122,7 +123,7 @@ function UserProfile() {
             justifyContent: "center",
           }}
         >
-          <img src={user?.reportedUser?.profile?.uri || SVG.profile} />
+          <img src={`${IMAGE_BASE_URL}${user?.reportedUser?.profile}`} style={{ width: 80, height: 80, borderRadius: '100px' }} />
           <Typography>{user?.reportedUser?.userName || '@jacob_w'}</Typography>
         </Stack>
         <Grid
@@ -178,7 +179,7 @@ function UserProfile() {
             <Typography
               sx={{ color: "#000000", fontFamily: "Roboto", fontSize: "22px" }}
             >
-              2
+              {user?.reportedUser?.superFans}
             </Typography>
             <Typography
               sx={{ color: "#000000", fontFamily: "Roboto", fontSize: "13px" }}
@@ -344,7 +345,7 @@ function UserProfile() {
           </Table>
           {/* </TableContainer> */}
         </Paper>
-        <Typography mt="55px"></Typography>
+        {/* <Typography mt="55px"></Typography>
 
         <Slider
           getAriaLabel={() => "Temperature range"}
@@ -352,8 +353,8 @@ function UserProfile() {
           onChange={handleChange}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
-        />
-        <Typography mt="55px"></Typography>
+        /> */}
+        {/* <Typography mt="55px"></Typography> */}
       </Box>
     </Container>
   );

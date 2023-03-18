@@ -16,6 +16,7 @@ import { line, creatorImage } from "../assets/images";
 import profile from "../assets/profile.svg";
 import Loading from "../components/Loading";
 import { GetReportedUser } from "../utils/api-calls";
+import { IMAGE_BASE_URL } from "../utils/constant";
 const AccountReported = () => {
   const [loading, setLoading] = useState(false);
   const [reportedAccount, setReportedAccount] = useState([]);
@@ -39,7 +40,7 @@ const AccountReported = () => {
   return (
     <Box
       display={"flex"}
-      justifycreatorName={"center"}
+      justifyContent={"center"}
       alignItems={"center"}
       flexDirection="column"
       px={"10%"}
@@ -71,7 +72,7 @@ const AccountReported = () => {
           flexDirection: "column",
           width: "78vw",
         }}
-        justifycreatorName={"center"}
+        justifyContent={"center"}
         alignItems={"center"}
       >
         {/* <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -98,11 +99,16 @@ const AccountReported = () => {
                     align: "center",
                   }}
                 >
-                  <Grid container alignItems={"center"} ml={-2.5}>
+                  <Grid container alignItems={"center"} ml={-2.2}>
                     <img
-                      src={row?.reportedUser?.profile?.uri || creatorImage}
-                      width="38px"
-                      // onClick={() => navigate('/userProfile')}
+                      src={`${IMAGE_BASE_URL}${row?.reportedUser?.profile}`}
+
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        borderTopRightRadius: '10px',
+                        borderBottomRightRadius: '10px',
+                      }}
                       onClick={() => navigate('/userProfile', { state: { item: row } })}
 
                       alt='img'

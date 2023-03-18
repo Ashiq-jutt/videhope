@@ -4,6 +4,7 @@ import Loading from "../components/Loading";
 import UserCard from "../components/video-crd";
 import { GetReportedContent } from "../utils/api-calls";
 import { CardMedia } from '@material-ui/core';
+import { IMAGE_BASE_URL } from "../utils/constant";
 
 const ContentReport = () => {
   const [loading, setLoading] = useState(false);
@@ -76,7 +77,8 @@ const ContentReport = () => {
                 style={{ height: 170, width: 170, borderRadius: "30px" }}
                 controls={true}
               /> */}
-              <video src={item?.content?.path?.uri || "https://www.w3schools.com/html/mov_bbb.mp4"} controls={true}
+              {/* `${IMAGE_BASE_URL}${item?.userImage}` */}
+              <video src={`${IMAGE_BASE_URL}${item?.content?.path}`} controls={true}
                 style={{ height: 170, width: 170, borderRadius: "30px", backgroundColor: 'grey' }} />
 
               {/* <CardMedia component="video" src={'https://www.youtube.com/watch?v=foGs2yqMxh4' || item?.content?.path} controls={true}

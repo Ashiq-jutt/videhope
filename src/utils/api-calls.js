@@ -60,3 +60,18 @@ export const GetRequestsCount = async () => {
   const res = await GetData("api/creator-request/get-requests-count");
   return res;
 };
+
+export const ApproveRequest = async (id) => {
+  const res = await PutData(`api/creator-request/approve/${id}`, {});
+  if (res?.data?.succeeded) {
+    console.log("successfully Update!");
+  }
+  return res;
+}
+export const RejectRequest = async (id) => {
+  const res = await PutData(`api/creator-request/reject/${id}`, {});
+  if (res?.data?.succeeded) {
+    console.log("successfully Update!");
+  }
+  return res;
+}

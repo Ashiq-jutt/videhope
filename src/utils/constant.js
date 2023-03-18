@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "https://videhope.azurewebsites.net/";
+export const IMAGE_BASE_URL = "https://videhope.azurewebsites.net/UploadedFiles/";
 const options = {
     headers: {
         "Authorization": "bearer " + localStorage.getItem("@token"),

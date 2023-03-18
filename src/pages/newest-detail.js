@@ -1,21 +1,56 @@
 import { Button, Grid, Switch, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import { newestPic } from "../assets/images";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IMAGE_BASE_URL } from "../utils/constant";
+import { ApproveRequest, RejectRequest } from "../utils/api-calls";
+import Loading from "../components/Loading";
 
 const NewestDetail = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
+  const location = useLocation();
+  const myData = location?.state?.myData;
+  const item = location?.state?.item;
+  console.log("🚀 ~ file: newest-detail.js:9 ~ item:", item)
+  const [flag, setFlag] = useState(false);
 
-  const [checked, setChecked] = React.useState(true);
-  const [checked1, setChecked1] = React.useState(true);
+  const handleCheck = (event) => {
+    setFlag(event.target.checked);
 
-  const handleChange1 = (event) => {
-    setChecked1(event.target.checked1);
   };
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
+  console.log("🚀 ~ file: newest-detail.js:20 ~ handleCheck ~ event.target.checked1:", flag)
+  const handlePut = () => {
+    if (flag) {
+      (async () => {
+        setLoading(true);
+        try {
+          const res = await ApproveRequest(item?.request?.id);
+          console.log("Approve Message =>", res?.data);
+        } catch (error) {
+          console.log("🚀 ~ file: newest-detail.js:32 ~ error:", error)
+
+        }
+        setLoading(false);
+      })();
+    }
+    else {
+      (async () => {
+        setLoading(true);
+        try {
+          const res = await RejectRequest(item?.request?.id);
+          console.log("Reject Message =>", res?.data);
+        } catch (error) {
+          console.log("🚀 ~ file: newest-detail.js:44 ~ error:", error)
+
+        }
+        setLoading(false);
+      })();
+    }
+    navigate('/newest', { state: { item: myData } })
+  }
+  if (loading) return <Loading />;
   return (
     <Box
       display={"flex"}
@@ -38,17 +73,19 @@ const NewestDetail = () => {
           <Grid
             sx={{
               height: "250px",
-              // bgcolor: "white",
+
               width: "235px",
             }}
           >
             <img
               alt={"photoo here"}
-              src={newestPic}
+              src={`${IMAGE_BASE_URL}${item?.userImage}`}
               style={{
-                height: { sm: "220px", xs: '170px' },
-                width: { sm: "220px", xs: '170px' },
-                borderRadius: "100px",
+                height: '245px',
+                width: '245px',
+                borderRadius: "150px",
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             />
           </Grid>
@@ -62,8 +99,8 @@ const NewestDetail = () => {
             }}
           >
             <Box>
-              <Typography fontSize={"18px"}>Jackson</Typography>
-              <Typography fontSize={"12px"}>Jacksonmariay@gmail.com</Typography>
+              <Typography fontSize={"18px"}>{item?.username}</Typography>
+              <Typography fontSize={"12px"}>{item?.userEmail}</Typography>
               <Box
                 sx={{
                   height: "35px",
@@ -81,39 +118,20 @@ const NewestDetail = () => {
                   Verified
                 </Typography>
                 <Switch
-                  checked1={checked1}
-                  onChange={handleChange1}
+                  defaultChecked={item?.request?.isApproved}
+                  // checked1={checked1}
+                  onChange={handleCheck}
                   inputProps={{ "aria-label": "controlled" }}
                 />
               </Box>
-              <Box
-                sx={{
-                  height: "35px",
-                  width: "200px",
-                  bgcolor: "white",
-                  boxShadow: "1px 1px 5px  #000",
-                  borderRadius: "10px",
-                  display: "flex",
-                  mt: 2,
-                  alignSelf: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography m={1} fontSize={"12px"}>
-                  Unverified
-                </Typography>
-                <Switch
-                  checked={checked}
-                  onChange={handleChange}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-              </Box>
+
             </Box>
           </Box>
         </Box>
         <Box justifyContent={"center"}>
           <Button
-            onClick={() => navigate("/newest")}
+            // onClick={() => navigate("/newest")}
+            onClick={() => handlePut()}
             sx={{
               variant: "outlined",
               color: "white",
