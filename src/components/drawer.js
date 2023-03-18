@@ -16,6 +16,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import * as SVG from "../assets/svgs";
@@ -26,7 +27,10 @@ import CustomerService from "../pages/customer-services";
 import EmployeePortal from "../pages/employe-portal";
 
 const drawerWidth = 240;
+const local = localStorage.getItem('accessTo')
+console.log("🚀 ~ file: drawer.js:31 ~ local:", local)
 
+const accessTo = local;
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -64,6 +68,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
+
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
@@ -80,7 +85,7 @@ const routes = [
     route: "/dashboard",
     component: <EmployeePortal />,
   },
-  {
+  accessTo.includes('Accounting') && {
     type: "collapse",
     name: "Accounting",
     key: "FilterEarning",
@@ -88,7 +93,8 @@ const routes = [
     route: "/accounting",
     component: <Accounting />,
   },
-  {
+
+  accessTo.includes('CreatorsPanel') && {
     type: "collapse",
     name: "Creators Panel",
     key: "CreatorPanel",
@@ -97,7 +103,7 @@ const routes = [
     component: <CreatePanel />,
   },
 
-  {
+  accessTo.includes('CustomerService') && {
     type: "collapse",
     name: "Customer Service",
     key: "customerService",
@@ -191,7 +197,7 @@ export default function PersistentDrawerLeft() {
             ) => {
               const iconName = SVG[icon];
               return (
-                <Link style={{ textDecoration: "none" }} to={route}>
+                <Link key={index} style={{ textDecoration: "none" }} to={route}>
                   <ListItem key={index} disablePadding>
                     <ListItemButton
                       style={{

@@ -10,14 +10,9 @@ import {
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewUser } from "../assets/images";
-import { onLogin, onSignup } from "../services/api/api-actions";
 import { Register } from "../utils/api-calls";
-// import Masonry from "@mui/lab/Masonry";
 const CreateNewUser = () => {
   const navigate = useNavigate();
-
-  const [image, setImage] = React.useState(null);
-  const [imageUrl, setImageUrl] = React.useState("")
   const [file, setFile] = React.useState();
   const [payload, setPayload] = React.useState({
     Name: '',
@@ -69,8 +64,8 @@ const CreateNewUser = () => {
         sx={{
           //   width: "cal(100% - 700px)",
           // boxShadow: "1px 1px 2px  #000",
-          borderBottomLeftRadius: "50px",
-          borderBottomRightRadius: "50px",
+          // borderBottomLeftRadius: "50px",
+          // borderBottomRightRadius: "50px",
           display: "flex",
           bgcolor: "white",
           flexDirection: "column",
@@ -119,6 +114,7 @@ const CreateNewUser = () => {
             component="form"
             sx={{
               "& > :not(style)": { width: "32ch" },
+              py: '10px',
             }}
             noValidate
             autoComplete="off"
@@ -152,6 +148,7 @@ const CreateNewUser = () => {
             component="form"
             sx={{
               "& > :not(style)": { width: "32ch" },
+              pb: '10px'
             }}
             noValidate
             autoComplete="off"
@@ -172,6 +169,7 @@ const CreateNewUser = () => {
             component="form"
             sx={{
               "& > :not(style)": { width: "32ch" },
+              pt: '5px'
             }}
             noValidate
             autoComplete="off"
@@ -207,9 +205,10 @@ const CreateNewUser = () => {
                   setPayload({ ...payload, AccessTo: event?.target?.value });
                 }}
               >
-                <MenuItem value={"Accounting"}>Accounting</MenuItem>
-                <MenuItem value={"CreatorsPanel"}>Creators Panel</MenuItem>
-                <MenuItem value={"CustomerServices"}>
+                {/* Accounting,CreatorsPanel,CustomerService */}
+                <MenuItem value="Accounting">Accounting</MenuItem>
+                <MenuItem value="CreatorsPanel">Creators Panel</MenuItem>
+                <MenuItem value="CustomerService">
                   Customer Services
                 </MenuItem>
               </Select>

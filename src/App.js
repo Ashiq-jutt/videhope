@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-// import React from "react";
 import { useSelector } from "react-redux";
 import "../src/services/api/axios-interceptor";
 import "./App.css";

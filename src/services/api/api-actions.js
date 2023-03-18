@@ -15,13 +15,16 @@ export const onSignup = async (values) => {
 };
 export const onLogin = (values, setLoading = (bool) => { }, setToken) => {
   return async (dispatch, getState) => {
+    let accessTo = '';
     try {
       setLoading(true);
       const res = await postData(URLS.staff.login, values);
       console.log('res of onLogin=>', res);
       setToken(res?.data?.token);
       dispatch(setUserInfo(res?.data?.user));
-
+      accessTo = res?.data?.user.accessTo;
+      // console.log("🚀 ~ file: api-actions.js:26 ~ return ~ accessTo:", accessTo)
+      localStorage.setItem('accessTo', accessTo)
     } catch (error) {
       console.log('error in login', error);
     } finally {
