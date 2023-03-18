@@ -52,7 +52,7 @@ export const GetChatList = async () => {
   return res;
 };
 export const GetRequestType = async (type) => {
-  const res = await GetData(`api/creator-request-/get-requests/${type}`);
+  const res = await GetData(`api/creator-request/get-requests/${type}`);
   return res;
 };
 

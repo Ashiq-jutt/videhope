@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { employedPortal, empPic } from "../assets/images";
 import "../css/employe-portal.css";
 import { getAllStaff } from "../services/api/api-actions";
