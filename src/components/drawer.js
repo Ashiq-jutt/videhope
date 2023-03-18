@@ -21,8 +21,8 @@ import logo from "../assets/logo.svg";
 import * as SVG from "../assets/svgs";
 import useToken from "../hooks/use-token";
 import Accounting from "../pages/accounting";
-import CreatorPanelLogin from "../pages/creator-panel-login";
-import CustomerLogin from "../pages/cutomer-ligin";
+import CreatePanel from "../pages/create-panel";
+import CustomerService from "../pages/customer-services";
 import EmployeePortal from "../pages/employe-portal";
 
 const drawerWidth = 240;
@@ -91,10 +91,10 @@ const routes = [
   {
     type: "collapse",
     name: "Creators Panel",
-    key: "CreatorPanelLogin",
+    key: "CreatorPanel",
     icon: "creator",
-    route: "/creatorPanelLogin",
-    component: <CreatorPanelLogin />,
+    route: "/createPanel",
+    component: <CreatePanel />,
   },
 
   {
@@ -102,8 +102,8 @@ const routes = [
     name: "Customer Service",
     key: "customerService",
     icon: "customerService",
-    route: "/customerLogin",
-    component: <CustomerLogin />,
+    route: "/customerService",
+    component: <CustomerService />,
   },
   {
     type: "collapse",

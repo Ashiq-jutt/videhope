@@ -15,9 +15,7 @@ import ContentReport from "./pages/content-report";
 import CreateNewUser from "./pages/create-new-user";
 import CreatePanel from "./pages/create-panel";
 import CreatorEarning from "./pages/creator-earning";
-import CreatorPanelLogin from "./pages/creator-panel-login";
 import CustomerService from "./pages/customer-services";
-import CustomerLogin from "./pages/cutomer-ligin";
 import Detail from "./pages/detail";
 import Earnings from "./pages/earnings";
 import EditProfile from "./pages/edit";
@@ -44,7 +42,6 @@ function App() {
             <Route path="/" element={<EmployeePortal />} />
             <Route path="dashboard" element={<EmployeePortal />} />
             <Route path="userProfile" element={<UserProfile />} />
-            <Route path="creatorPanelLogin" element={<CreatorPanelLogin />} />
             <Route path="employeePortal" element={<EmployeePortal />} />
             <Route path="allUsers" element={<UserData />} />
             <Route path="createNewUser" element={<CreateNewUser />} />
@@ -59,7 +56,6 @@ function App() {
             <Route path="creatorEarning" element={<CreatorEarning />} />
             <Route path="createPanel" element={<CreatePanel />} />
             <Route path="newest" element={<Newest />} />
-            <Route path="customerLogin" element={<CustomerLogin />} />
             <Route path="customerService" element={<CustomerService />} />
             <Route path="contentReport" element={<ContentReport />} />
             <Route path="accountReported" element={<AccountReported />} />
