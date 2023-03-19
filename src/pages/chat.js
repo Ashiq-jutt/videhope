@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "../components/Loading";
 import { useEffect } from "react";
-import { GetChatList } from "../utils/api-calls";
+import { GetChatList, SendMessage } from "../utils/api-calls";
 import ChatApp from "../components/chat-gpt";
 import { Card } from "@material-ui/core";
 
@@ -13,9 +13,9 @@ const Chat = () => {
   const [messageList, setMessageList] = React.useState([]);
   const classes = useStyles();
   const [messages, setMessages] = useState([]);
-  console.log("messsssage====>",messages)
+  console.log("messsssage====>", messages)
   const [input, setInput] = useState("");
-const arryUSer=["ALtaf","Ashiq","Alam","Aslam"];
+  const arryUSer = ["ALtaf", "Ashiq", "Alam", "Aslam"];
   const onMessageSend = () => {
     if (input === "") {
       return;
@@ -30,6 +30,14 @@ const arryUSer=["ALtaf","Ashiq","Alam","Aslam"];
       onMessageSend();
     }
   };
+  const sedMessage = () => {
+    (async () => {
+      setLoading(true)
+      const res = await SendMessage();
+      console.log("res in sendMesage=>", res?.data?.message);
+      setLoading(false)
+    })();
+  }
   useEffect(() => {
 
     (async () => {
@@ -41,73 +49,74 @@ const arryUSer=["ALtaf","Ashiq","Alam","Aslam"];
     })();
   }, []);
 
-  const handleMessage=(item) => {
+  const handleMessage = (item) => {
     setMessages(item)
   }
   if (loading) return <Loading />;
   return (
     <div className="d-flex">
       <div className="col-md-6" >
-        {messageList?.map((item)=>{
+        {messageList?.map((item) => {
           return (
-            <Card onClick={()=>handleMessage(item)} className="col-md-8" style={{marginTop:'10px',padding:'10px'}}>
-            <h5>{item.userName}</h5>
-          <div className="d-flex" style={{justifyContent:'space-between'}}>
-          <p>{item?.lastMessage?.description}</p>
-          <p>{item?.lastMessage?.createdAt}</p>
-          </div>
-           
-          
-      
-               </Card>
+            <Card onClick={() => handleMessage(item)} className="col-md-8" style={{ marginTop: '10px', padding: '10px' }}>
+              <h5>{item.userName}</h5>
+              <div className="d-flex" style={{ justifyContent: 'space-between' }}>
+                <p>{item?.lastMessage?.description}</p>
+                <p>{item?.lastMessage?.createdAt}</p>
+              </div>
+
+
+
+            </Card>
           )
         })
 
         }
-      
+
       </div>
-      <div className="col-md-6" style={{backgroundColor:'green'}}>
-    <div
-      className={classes.root}
-      style={{
-        justifyContent: "center",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <div className={classes.chatSection} style={{ width: "50%" }}>
-        {arryUSer?.map((msg, index) => {
-          return(
-          <div
-            key={index}
-            className={
-              index % 2 === 0 ? classes.chatMessage : classes.chatMessageRight
-            }
-          >
-            <div>
-              <p>{msg}</p>
-            </div>
+      <div className="col-md-6" style={{ backgroundColor: 'green' }}>
+        <div
+          className={classes.root}
+          style={{
+            justifyContent: "center",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div className={classes.chatSection} style={{ width: "50%" }}>
+            {arryUSer?.map((msg, index) => {
+              return (
+                <div
+                  key={index}
+                  className={
+                    index % 2 === 0 ? classes.chatMessage : classes.chatMessageRight
+                  }
+                >
+                  <div>
+                    <p>{msg}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
-        )})}
-      </div>
 
-      <div className={classes.chatInput}>
-        <TextField
-          fullWidth
-          label="Message"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
+          <div className={classes.chatInput}>
+            <TextField
+              fullWidth
+              label="Message"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
 
-        <Button variant="contained" color="primary" onClick={onMessageSend}>
-          Send
-        </Button>
+            <Button variant="contained" color="primary" onClick={onMessageSend}>
+              Send
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-    </div>
-    
+
     // <ChatApp />
   );
 }

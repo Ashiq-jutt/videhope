@@ -26,8 +26,32 @@ export const Register = async (paylaod) => {
 
   return res;
 };
+export const SendMessage = async (paylaod) => {
+  const res = await PostFormData("api/message/send", paylaod);
+  if (res?.data?.succeeded) {
+    console.log("successfully Message Send!");
+  }
+
+  return res;
+};
 export const UpdateStaff = async (paylaod) => {
   const res = await PutData("api/staff/update-access", paylaod);
+  if (res?.data?.succeeded) {
+    console.log("successfully Added!");
+  }
+
+  return res;
+};
+export const BlockUser = async (id) => {
+  const res = await PutData(`api/user/block-user/${id}`, {});
+  if (res?.data?.succeeded) {
+    console.log("successfully Added!");
+  }
+
+  return res;
+};
+export const UnBlockUser = async (id) => {
+  const res = await PutData(`api/user/unblock-user/${id}`, {});
   if (res?.data?.succeeded) {
     console.log("successfully Added!");
   }

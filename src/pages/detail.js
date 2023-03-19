@@ -1,9 +1,11 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import Avatar from "react-avatar";
 import { useLocation } from "react-router-dom";
 import { newestPic } from "../assets/images";
 import "../css/detail.css";
+import { IMAGE_BASE_URL } from "../utils/constant";
 const Detail = () => {
   const location = useLocation();
   const myData = location?.state?.item;
@@ -54,7 +56,7 @@ const Detail = () => {
           }}
         >
           <Box>
-            <img
+            {/* <img
               alt="Pic here"
               src={newestPic}
               style={{
@@ -62,13 +64,24 @@ const Detail = () => {
                 width: "170px",
                 borderRadius: "100px",
               }}
-            />
-            <Box className="d-flex" sx={{ justifyContent:'center',alignItems: 'center',flexDirection:'column'}}>
+            /> */}
+            {myData?.profile != '' ? (<img
+              alt={"Profile here"}
+              src={`${IMAGE_BASE_URL}${myData?.profile}`}
+              style={{
+                height: "180px",
+                width: "180px",
+                borderRadius: "100px",
+
+              }}
+            />) : <Avatar name={myData?.name} size="190" round={true} />}
+
+            <Box className="d-flex" sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
               <Typography fontSize={"24px"} ml={4}>
-                {myData.name}
+                {myData?.name}
               </Typography>
               <Typography fontSize={"12px"} ml={2} mt={-1}>
-             {myData.email}
+                {myData?.email}
               </Typography>
             </Box>
           </Box>
@@ -87,7 +100,11 @@ const Detail = () => {
                 sx={{
                   // variant: "outlined",
                   textTransform: "capitalize",
-                  bgcolor: "blue",
+                  bgcolor: "#014CC3",
+                  "&:hover": {
+                    backgroundColor: "#014CC3",
+                    // opacity: [0.9, 0.8, 0.7],
+                  },
                   color: "white",
                   boxShadow: "1px 1px 5px #000",
                   width: { xs: "200px", sm: "150px", md: "270px" },
@@ -166,7 +183,7 @@ const Detail = () => {
           container
           sx={{
             px: { sm: "5px", xs: "8px" },
-            width: { sm: "50vw", xs: "60vw" ,md:'60vw'},
+            width: { sm: "50vw", xs: "60vw", md: '60vw' },
             boxShadow: "1px 1px 5px  #000",
             borderRadius: "0px 0px 20px 20px ",
             direction: "row",

@@ -184,7 +184,7 @@ const EditProfile = () => {
           <Box
             sx={{
               height: "35px",
-              width: "170px",
+              width: "200px",
               bgcolor: "white",
               display: "flex",
               borderTopLeftRadius: "15px",
@@ -200,15 +200,15 @@ const EditProfile = () => {
               Block
             </Typography>
             <FormControlLabel
-              // label="Option A"
               control={<Switch name="isBlock"
-                onChange={handleBlocked} color='primary' />}
+                onChange={handleBlocked} color='default'
+                style={{ color: '#D92934' }} />}
             />
           </Box>
           <Box
             sx={{
-              height: "120px",
-              width: "170px",
+              height: "140px",
+              width: "200px",
               bgcolor: "white",
               display: "flex",
               mt: 1,
@@ -234,7 +234,8 @@ const EditProfile = () => {
             >
               <Typography fontSize={"12px"}>Accounting</Typography>
               <FormControlLabel
-                control={<Switch checked={accounting} name='Accounting' onChange={handleCheckboxChange} color='primary' />}
+                control={<Switch checked={accounting} name='Accounting' onChange={handleCheckboxChange}
+                  color='default' style={{ color: '#014CC3' }} />}
 
               />
             </Box>
@@ -252,7 +253,8 @@ const EditProfile = () => {
               <Typography fontSize={"12px"}>Creators Panel</Typography>
               <FormControlLabel
                 // label="Option A"
-                control={<Switch checked={creatorPanel} name='CreatorsPanel' onChange={handleCheckboxChange} color='primary' />}
+                control={<Switch checked={creatorPanel} name='CreatorsPanel' onChange={handleCheckboxChange}
+                  color='default' style={{ color: '#014CC3' }} />}
 
               />
             </Box>
@@ -270,7 +272,8 @@ const EditProfile = () => {
               <Typography fontSize={"12px"}>Customer Services</Typography>
               <FormControlLabel
                 // label="Option A"
-                control={<Switch checked={customerService} name='CustomerServices' onChange={handleCheckboxChange} color='primary' />}
+                control={<Switch checked={customerService} name='CustomerServices' onChange={handleCheckboxChange}
+                  color='default' style={{ color: '#014CC3', }} />}
 
               />
             </Box>
