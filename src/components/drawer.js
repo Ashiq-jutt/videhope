@@ -27,10 +27,11 @@ import CustomerService from "../pages/customer-services";
 import EmployeePortal from "../pages/employe-portal";
 
 const drawerWidth = 240;
-const local = localStorage.getItem('accessTo')
-console.log("🚀 ~ file: drawer.js:31 ~ local:", local)
+const local = localStorage.getItem("accessTo");
+console.log("🚀 ~ file: drawer.js:31 ~ local:", local);
 
 const accessTo = local;
+console.log("Access To ==> ", accessTo);
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -68,7 +69,6 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
-
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
@@ -85,7 +85,7 @@ const routes = [
     route: "/dashboard",
     component: <EmployeePortal />,
   },
-  accessTo.includes('Accounting') && {
+  accessTo?.includes("Accounting") && {
     type: "collapse",
     name: "Accounting",
     key: "FilterEarning",
@@ -94,7 +94,7 @@ const routes = [
     component: <Accounting />,
   },
 
-  accessTo.includes('CreatorsPanel') && {
+  accessTo?.includes("CreatorsPanel") && {
     type: "collapse",
     name: "Creators Panel",
     key: "CreatorPanel",
@@ -103,7 +103,7 @@ const routes = [
     component: <CreatePanel />,
   },
 
-  accessTo.includes('CustomerService') && {
+  accessTo?.includes("CustomerService") && {
     type: "collapse",
     name: "Customer Service",
     key: "customerService",
@@ -141,7 +141,7 @@ export default function PersistentDrawerLeft() {
   return (
     <Box sx={{ display: "flex" }}>
       {/* <CssBaseline backgroundColor="#0e1a2e" /> */}
-      <AppBar open={open} >
+      <AppBar open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -228,7 +228,13 @@ export default function PersistentDrawerLeft() {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link onClick={() => { setToken('') }} style={{ textDecoration: "none" }} to={"/"}>
+            <Link
+              onClick={() => {
+                setToken("");
+              }}
+              style={{ textDecoration: "none" }}
+              to={"/"}
+            >
               <ListItem key={6} disablePadding>
                 <ListItemButton style={{ width: "200px" }}>
                   <ListItemIcon>
