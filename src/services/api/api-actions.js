@@ -28,6 +28,7 @@ export const onLogin = (values, setLoading = (bool) => { }, setToken) => {
     } catch (error) {
       console.log('error in login', error);
     } finally {
+      window.location.reload();
       setLoading(false);
     }
   };

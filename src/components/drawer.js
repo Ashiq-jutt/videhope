@@ -231,6 +231,8 @@ export default function PersistentDrawerLeft() {
             <Link
               onClick={() => {
                 setToken("");
+                // localStorage.clear();
+                window.location.reload();
               }}
               style={{ textDecoration: "none" }}
               to={"/"}
