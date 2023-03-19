@@ -35,7 +35,7 @@ function App() {
     <>
       <Routes>
         {!token ? (
-          <Route path="/" element={<AdminLogin setToken={setToken} />} />
+          <Route path="*" element={<AdminLogin setToken={setToken} />} />
         ) : (
           <Route path="/" element={<PersistentDrawerLeft />}>
             <Route path="/" element={<EmployeePortal />} />
@@ -59,7 +59,7 @@ function App() {
             <Route path="contentReport" element={<ContentReport />} />
             <Route path="accountReported" element={<AccountReported />} />
             <Route path="subscription" element={<Subscription />} />
-            <Route path="*" element={<ErrorPage />} />
+            {/* <Route path="*" element={<ErrorPage />} /> */}
           </Route>
         )}
       </Routes>
