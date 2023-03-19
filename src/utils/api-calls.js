@@ -75,6 +75,10 @@ export const GetChatList = async () => {
   const res = await GetData("api/admin/get-chat-list");
   return res;
 };
+export const GetMessage = async (id) => {
+  const res = await GetData(`api/admin/get-messages/${id}`);
+  return res;
+};
 export const GetRequestType = async (type) => {
   const res = await GetData(`api/creator-request/get-requests/${type}`);
   return res;
