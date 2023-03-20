@@ -12,21 +12,47 @@ import Avatar from "react-avatar";
 import { bgcolor } from "@mui/system";
 
 const Chat = () => {
+  const user = JSON.parse(localStorage.getItem('usemsg'));
+
+  // Parse the JSON string back into a JavaScript object
+  // const user = (userString);
   const [loading, setLoading] = useState(false)
-  const [messageList, setMessageList] = React.useState([]);
+  const [messageList, setMessageList] = useState([]);
   const classes = useStyles();
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState('');
-  const [name, setName] = useState('s');
-  console.log("messsssage====>", messages)
-  const [input, setInput] = useState("");
-  const arryUSer = ["ALtaf", "Ashiq", "Alam", "Aslam"];
-  const onMessageSend = () => {
-    if (input === "") {
-      return;
-    }
+  const [name, setName] = useState('');
+  // console.log("messsssage====>", messages)
 
-    // setMessages((msgs) => [...msgs, input]);
+  const [input, setInput] = useState("");
+  const [id, setId] = useState(-1);
+  const onMessageSend = async () => {
+
+    try {
+      if (input === "") {
+        return;
+      }
+      if (id === -1) {
+        setInput("");
+        alert('please select user first!')
+        return;
+      }
+      var formDate = new FormData();
+      formDate.append("IsSeen", false);
+      formDate.append("IsFromAdmin", true);
+      formDate.append("IsToAdmin", false);
+      formDate.append("Type", 'text');
+      formDate.append("Description", input);
+      formDate.append("To", id);
+      formDate.append("From", 0);
+
+      console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ formDate:", formDate)
+      const res = await SendMessage(formDate);
+      console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ res:", res?.data)
+
+    } catch (error) {
+      console.log('error........', error?.response?.data?.Message)
+    }
     setInput("");
   };
 
@@ -38,24 +64,21 @@ const Chat = () => {
   };
 
   const handleGetMessage = async (id) => {
-    console.log("🚀 ~ file: chat.js:39 ~ handleGetMessage ~ id:", id)
     setImage(id?.image);
     setName(id?.userName);
+    setId(id?.userId);
     const res = await GetMessage(id?.userId);
-    // console.log("res in GetMessage callss=>", res?.data);
     setMessages(res?.data || []);
   }
-  // console.log("🚀 ~ file: chat.js:44 ~ handleGetMessage ~ setMessages:", messages)
-
+  const getChat = async () => {
+    const res = await GetChatList();
+    console.log("res in servises callss=>", res?.data);
+    setMessageList(res?.data || []);
+  }
   useEffect(() => {
-
-    (async () => {
-      // setLoading(true)
-      const res = await GetChatList();
-      console.log("res in servises callss=>", res?.data);
-      setMessageList(res?.data || []);
-      // setLoading(false)
-    })();
+    getChat();
+    handleGetMessage(id)
+    getChat();
   }, []);
 
   function formatTime(timestamp) {
@@ -81,69 +104,73 @@ const Chat = () => {
           overflow: 'auto', /* enable scrolling */
         }}
       >
-        {messageList?.map((item) => {
+        {messageList?.map((item, index) => {
           return (
-            <Card onClick={() => handleGetMessage(item)} className="col-md-11"
-              style={{ marginTop: '4px', padding: '7px', margin: '10px' }}>
-              <div className="d-flex " style={{ justifyContent: 'space-between' }}>
-                <div className="d-flex" style={{ alignItems: 'center' }}>
-                  <div>
-                    {item?.image != '' ? (<img
-                      alt={"Profile here"}
-                      src={`${IMAGE_BASE_URL}${item?.image}`}
-                      style={{
-                        height: '50px',
-                        width: '50px',
-                        borderRadius: "100px",
+            <>
+              <Card key={index} onClick={() => handleGetMessage(item)} className="col-md-11"
+                style={{ marginTop: '4px', padding: '7px', margin: '10px' }}>
+                <div className="d-flex " style={{ justifyContent: 'space-between' }}>
+                  <div className="d-flex" style={{ alignItems: 'center' }}>
+                    <div>
+                      {item?.image != '' ? (<img
+                        alt={"img"}
+                        src={`${IMAGE_BASE_URL}${item?.image}`}
+                        style={{
+                          height: '50px',
+                          width: '50px',
+                          borderRadius: "100px",
 
-                      }}
-                    />) : <Avatar name={item?.userName} size="50" round={true} />}
-                  </div>
-                  <div style={{ marginLeft: '10px' }}>
-                    <Typography sx={{
-                      fontFamily: "gilroy",
-                      lineHeight: '5px',
-                      fontStyle: 'normal',
-                    }}
-                      style={{
-                        fontSize: '16px',
-                        fontWeight: '500',
-                        color: '#787676',
-                      }}
-                    >{item.userName}
-                    </Typography>
-                    <Typography sx={{
-                      fontFamily: "gilroy",
-                    }}
-                      style={{
-                        fontSize: '12px',
-                        fontWeight: '400',
-                        lineHeight: '25px',
+                        }}
+                      />) : <Avatar name={item?.userName} size="50" round={true} />}
+                    </div>
+                    <div style={{ marginLeft: '10px' }}>
+                      <Typography sx={{
+                        fontFamily: "gilroy",
+                        lineHeight: '5px',
                         fontStyle: 'normal',
-                        color: '#060000',
-                        marginLeft: '6px',
                       }}
-                    >{item?.lastMessage?.description}
-                    </Typography>
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: '500',
+                          color: '#787676',
+                        }}
+                      >{item.userName}
+                      </Typography>
+                      <Typography variant="body1" sx={{
+                        fontFamily: "gilroy",
+                      }}
+                        style={{
+                          fontSize: '12px',
+                          fontWeight: '400',
+                          lineHeight: '25px',
+                          fontStyle: 'normal',
+                          color: '#060000',
+                          marginLeft: '6px',
+                        }}
+                      >{item?.lastMessage?.description.substring(0, 45)}
+                      </Typography>
+                    </div>
+                  </div>
+
+                  <div
+                    sx={{ fontFamily: "gilroy", }}
+                    style={{
+
+                      fontSize: '12px',
+                      fontWeight: 500,
+                      fontStyle: 'normal',
+                      color: '#858381',
+                    }}>{formatTime(item?.lastMessage?.createdAt)}
                   </div>
                 </div>
 
-                <div
-                  sx={{ fontFamily: "gilroy", }}
-                  style={{
-
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    fontStyle: 'normal',
-                    color: '#858381',
-                  }}>{formatTime(item?.lastMessage?.createdAt)}
-                </div>
-              </div>
 
 
 
+              </Card>
 
-            </Card>
+            </>
+
           )
         })
 
@@ -152,7 +179,7 @@ const Chat = () => {
       </Box>
       <Box className="col-md-6"
         style={{
-          bgcolor: '#FFFFFF',
+          bgcolor: 'red',
           boxShadow: "1px 1px 5px  #000",
           marginLeft: '30px',
           height: '520px', /* set the height of the container to limit its size */
@@ -168,36 +195,46 @@ const Chat = () => {
             // alignItems: "center",
           }}
         >
-          {image && <div className="d-flex">
-            {image ? (<img
-              alt={"Profile here"}
-              src={`${IMAGE_BASE_URL}${image}`}
-              style={{
-                height: '80px',
-                width: '80px',
-                borderRadius: "100px",
-              }}
-            />) : <Avatar name={name} size="80" round={true} />}
-            <Typography
-              sx={{
-                fontFamily: "gilroy",
+          <div className="d-flex" style={{ height: '78px' }}>
+            {image && <>
+              {image ? (<img
+                alt={"Profile here"}
+                src={`${IMAGE_BASE_URL}${image}`}
+                style={{
+                  height: '80px',
+                  width: '80px',
+                  borderRadius: "100px",
+                }}
+              />) : <Avatar name={name} size="80" round={true} />}
+              <Typography
+                sx={{
+                  fontFamily: "gilroy",
 
-              }}
-              style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                lineHeight: '70px',
-                color: '#060000',
-                marginLeft: '10px', fontStyle: 'normal',
-              }}>{name}
-            </Typography>
-          </div>}
+                }}
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  lineHeight: '70px',
+                  color: '#060000',
+                  marginLeft: '10px', fontStyle: 'normal',
+                }}>{name}
+              </Typography>
+            </>}
+          </div>
           <Box className={classes.chatSection}
-            sx={{ width: "85%", bgcolor: 'grey', height: '380px', overflow: 'auto', /* enable scrolling */ }}>
+            sx={{
+              width: "85%",
+              bgcolor: 'grey',
+              height: '380px',
+              overflow: 'auto',
+              // '&::-webkit-scrollbar': { display: 'none' }
+              /* enable scrolling */
+            }}>
             {messages?.map((msg, index) => {
               return (
-                <div key={index} className="d-flex">
-                  {image ? (
+                <div key={index} className="d-flex"
+                  style={{ flexDirection: msg.to == user.id ? 'row' : 'row-reverse', }}>
+                  {image && msg.to == user.id ? (
                     <img
                       alt={"Profile here"}
                       src={`${IMAGE_BASE_URL}${image}`}
@@ -209,20 +246,31 @@ const Chat = () => {
                       }}
                     />
                   ) : (
-                    <Avatar name={name} size="40" round={true} />
+                    <img
+                      alt={"Profile here"}
+                      src={`${IMAGE_BASE_URL}${user.profile}`}
+                      style={{
+                        height: '40px',
+                        width: '40px',
+                        borderRadius: "100px",
+                        marginTop: '10px'
+                      }}
+                    />
+                    // <Avatar name={name} size="40" round={true} />
                   )}
                   <div
                     className={
-                      msg?.from === msg.from ? classes.chatMessage : classes.chatMessageRight
+                      msg?.to === user?.id ? classes.chatMessage : classes.chatMessageRight
                     }
                   >
-                    <Typography style={{ fontFamily: 'gilroy', lineStyle: 'normal', }} sx={{
-                      fontSize: '16px',
-                      fontWeight: '500',
+                    <Typography style={{ fontFamily: 'gilroy', lineStyle: 'normal', }}
+                      sx={{
+                        fontSize: '16px',
+                        fontWeight: '500',
 
-                      color: '#060000',
-                      top: '10px',
-                    }}>
+                        color: '#060000',
+                        top: '10px',
+                      }}>
                       {msg?.description}
                     </Typography>
                   </div>
@@ -280,13 +328,15 @@ const useStyles = makeStyles((theme) => ({
   },
   chatMessageRight: {
     backgroundColor: "#B6E8FE",
-    borderRadius: "10px",
-    padding: "10px",
-    margin: "10px 0",
-    justifyContent: "flex-end",
+    borderRadius: "20px",
+    padding: '.03px',
+    paddingLeft: '17px',
+    paddingRight: '17px',
+    margin: "10px",
+
+    // alignItems: "center",
     // width: "50%",
-    // marginLeft: "50%",
-    overflowWrap: 'break-word'
+    overflowWrap: 'break-word',
   },
   chatInput: {
     // marginTop: "auto",

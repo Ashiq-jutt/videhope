@@ -24,6 +24,7 @@ export const onLogin = (values, setLoading = (bool) => { }, setToken) => {
       dispatch(setUserInfo(res?.data?.user));
       accessTo = res?.data?.user.accessTo;
       // console.log("🚀 ~ file: api-actions.js:26 ~ return ~ accessTo:", accessTo)
+      localStorage.setItem('usemsg', JSON.stringify(res?.data?.user));
       localStorage.setItem('accessTo', accessTo)
     } catch (error) {
       console.log('error in login', error);
