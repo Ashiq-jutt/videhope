@@ -22,38 +22,45 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState('');
   const [name, setName] = useState('');
-  // console.log("messsssage====>", messages)
+  const [flag, setFlag] = useState(false);
 
   const [input, setInput] = useState("");
   const [id, setId] = useState(-1);
   const onMessageSend = async () => {
+    if (input === "") {
+      return;
+    }
+    else if (id === -1) {
+      setInput("");
+      alert('please select user first!')
+      return;
+    } else {
+      try {
 
-    try {
-      if (input === "") {
-        return;
+        var formDate = new FormData();
+        formDate.append("IsSeen", false);
+        formDate.append("IsFromAdmin", true);
+        formDate.append("IsToAdmin", false);
+        formDate.append("Type", 'text');
+        formDate.append("Description", input);
+        formDate.append("To", id);
+        formDate.append("From", 0);
+
+        // console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ formDate:", formDate)
+        const res = await SendMessage(formDate);
+        console.log("🚀 ~ file: chat.js:51 ~ onMessageSend ~ res:", res)
+        const newMessage = {
+          image: user.image,
+          description: input,
+        }
+
+        setMessages([...messages, { newMessage }]);
+      } catch (error) {
+        console.log('error........', error?.response?.data?.Message)
       }
-      if (id === -1) {
-        setInput("");
-        alert('please select user first!')
-        return;
-      }
-      var formDate = new FormData();
-      formDate.append("IsSeen", false);
-      formDate.append("IsFromAdmin", true);
-      formDate.append("IsToAdmin", false);
-      formDate.append("Type", 'text');
-      formDate.append("Description", input);
-      formDate.append("To", id);
-      formDate.append("From", 0);
-
-      console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ formDate:", formDate)
-      const res = await SendMessage(formDate);
-      console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ res:", res?.data)
-
-    } catch (error) {
-      console.log('error........', error?.response?.data?.Message)
     }
     setInput("");
+    setFlag(!flag);
   };
 
   const handleKeyPress = (e) => {
@@ -74,12 +81,18 @@ const Chat = () => {
     const res = await GetChatList();
     console.log("res in servises callss=>", res?.data);
     setMessageList(res?.data || []);
+    // handleGetMessage(res?.data[0])
+
+
   }
   useEffect(() => {
     getChat();
-    handleGetMessage(id)
-    getChat();
-  }, []);
+  }, [flag])
+
+
+  // useEffect(() => {
+  //   getChat();
+  // }, []);
 
   function formatTime(timestamp) {
     const date = new Date(timestamp);
@@ -104,72 +117,72 @@ const Chat = () => {
           overflow: 'auto', /* enable scrolling */
         }}
       >
-        {messageList?.map((item, index) => {
+        {messageList?.map((item) => {
           return (
-            <>
-              <Card key={index} onClick={() => handleGetMessage(item)} className="col-md-11"
-                style={{ marginTop: '4px', padding: '7px', margin: '10px' }}>
-                <div className="d-flex " style={{ justifyContent: 'space-between' }}>
-                  <div className="d-flex" style={{ alignItems: 'center' }}>
-                    <div>
-                      {item?.image != '' ? (<img
-                        alt={"img"}
-                        src={`${IMAGE_BASE_URL}${item?.image}`}
-                        style={{
-                          height: '50px',
-                          width: '50px',
-                          borderRadius: "100px",
 
-                        }}
-                      />) : <Avatar name={item?.userName} size="50" round={true} />}
-                    </div>
-                    <div style={{ marginLeft: '10px' }}>
-                      <Typography sx={{
-                        fontFamily: "gilroy",
-                        lineHeight: '5px',
-                        fontStyle: 'normal',
+            <Card key={item?.userId} onClick={() => handleGetMessage(item)} className="col-md-11"
+              style={{ marginTop: '4px', padding: '7px', margin: '10px' }}>
+              <div className="d-flex " style={{ justifyContent: 'space-between' }}>
+                <div className="d-flex" style={{ alignItems: 'center' }}>
+                  <div>
+                    {item?.image != '' ? (<img
+                      alt={"img"}
+                      src={`${IMAGE_BASE_URL}${item?.image}`}
+                      style={{
+                        height: '50px',
+                        width: '50px',
+                        borderRadius: "100px",
+
                       }}
-                        style={{
-                          fontSize: '16px',
-                          fontWeight: '500',
-                          color: '#787676',
-                        }}
-                      >{item.userName}
-                      </Typography>
-                      <Typography variant="body1" sx={{
-                        fontFamily: "gilroy",
-                      }}
-                        style={{
-                          fontSize: '12px',
-                          fontWeight: '400',
-                          lineHeight: '25px',
-                          fontStyle: 'normal',
-                          color: '#060000',
-                          marginLeft: '6px',
-                        }}
-                      >{item?.lastMessage?.description.substring(0, 45)}
-                      </Typography>
-                    </div>
+                    />) : <Avatar name={item?.userName} size="50" round={true} />}
                   </div>
-
-                  <div
-                    sx={{ fontFamily: "gilroy", }}
-                    style={{
-
-                      fontSize: '12px',
-                      fontWeight: 500,
+                  <div style={{ marginLeft: '10px' }}>
+                    <Typography sx={{
+                      fontFamily: "gilroy",
+                      lineHeight: '5px',
                       fontStyle: 'normal',
-                      color: '#858381',
-                    }}>{formatTime(item?.lastMessage?.createdAt)}
+                    }}
+                      style={{
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        color: '#787676',
+                      }}
+                    >{item.userName}
+                    </Typography>
+                    <Typography variant="body1" sx={{
+                      fontFamily: "gilroy",
+                    }}
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: '400',
+                        lineHeight: '25px',
+                        fontStyle: 'normal',
+                        color: '#060000',
+                        marginLeft: '6px',
+                      }}
+                    >{item?.lastMessage?.description.substring(0, 45)}
+                    </Typography>
                   </div>
                 </div>
 
+                <div
+                  sx={{ fontFamily: "gilroy", }}
+                  style={{
+
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    fontStyle: 'normal',
+                    color: '#858381',
+                  }}>{formatTime(item?.lastMessage?.createdAt)}
+                </div>
+              </div>
 
 
 
-              </Card>
 
-            </>
+            </Card>
+
+
 
           )
         })
@@ -230,9 +243,9 @@ const Chat = () => {
               // '&::-webkit-scrollbar': { display: 'none' }
               /* enable scrolling */
             }}>
-            {messages?.map((msg, index) => {
+            {messages?.map((msg) => {
               return (
-                <div key={index} className="d-flex"
+                <div key={msg?.id} className="d-flex"
                   style={{ flexDirection: msg.to == user.id ? 'row' : 'row-reverse', }}>
                   {image && msg.to == user.id ? (
                     <img
