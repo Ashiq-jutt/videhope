@@ -15,6 +15,7 @@ const CustomerService = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false)
   const [allStaff, setAllStaff] = React.useState({});
+  console.log("🚀 ~ file: customer-services.js:18 ~ CustomerService ~ allStaff:", allStaff)
   const { messages, reportedContents, reportedUsers } = allStaff;
 
   React.useEffect(() => {
@@ -29,6 +30,10 @@ const CustomerService = () => {
     })();
   }, []);
   if (loading) return <Loading />;
+  const handleNavigate = (item) => {
+    if (item.total > 0) { navigate(item.route) }
+    else { return }
+  }
   return (
     <Box
       display={"flex"}
@@ -79,7 +84,7 @@ const CustomerService = () => {
                 {item.item}
               </Typography>
               <Button
-                onClick={() => navigate(item.route)}
+                onClick={() => handleNavigate(item)}
                 // onClick={() => navigate(item.route, { state: { item: item.total } })}
                 sx={{
                   bgcolor: "grey",

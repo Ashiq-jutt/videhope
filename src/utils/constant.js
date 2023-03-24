@@ -39,3 +39,7 @@ export const PutFormData = async (url, payload) => {
     const { data } = await axios.put(`${BASE_URL}/${url}`, payload, formDataOptions);
     return data;
 };
+export const DeleteData = async (url) => {
+    const { data } = await axios.delete(`${BASE_URL}/${url}`, options);
+    return data;
+};

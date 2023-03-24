@@ -1,25 +1,60 @@
-import {
-  Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  Grid,
-  Switch,
-  Box,
-  Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { accountingImage } from "../assets/images";
-
+import { TextField, Button, Select, MenuItem, Box, InputAdornment } from '@material-ui/core';
+// import axios from 'axios';
+import { useEffect } from "react";
+import { useState } from "react";
+import { AddCountryPrice, GetCountries } from "../utils/api-calls";
 const Subscription = () => {
   const navigate = useNavigate();
-  const [age, setAge] = React.useState("");
+
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('');
+  // console.log("🚀 ~ file: subscription.js:16 ~ Subscription ~ selectedCountry:", selectedCountry)
+  const getCountries = async () => {
+    const res = await GetCountries();
+    // console.log("res in servises callss=>", res?.data);
+    setCountries(res?.data || []);
+
+
+  }
+  useEffect(() => {
+    getCountries();
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (Number(from) <= Number(to) && Number(from) > 0 && selectedCountry != '') {
+      try {
+
+        var paylaod = {
+          CountryId: selectedCountry,
+          // loweLimit: from,
+          LowerLimit: parseFloat(from),
+          // upperLimit: to
+          UpperLimit: parseFloat(to)
+        }
+        const res = await AddCountryPrice(paylaod);
+        console.log("🚀 ~ file: chat.js:51 ~ onMessageSend ~ res:", res?.data)
+
+      } catch (error) {
+        console.log('error........', error?.response?.data?.Message)
+      }
+
+      setTo("");
+      setFrom("");
+      setSelectedCountry("");
+      // setFlag(!flag);
+    } else {
+      alert('Please fill all textfild !');
+      return;
+      // console.log('USD input is greater than comparison input!');
+      // display error message or prevent form submission
+    }
+  };
 
   return (
     <Box
@@ -67,100 +102,50 @@ const Subscription = () => {
               Subscriptions
             </Button>
             <Box container justifyContent={"center"} px={3} py={5}>
-              <Typography sx={{ color: "blue", fontSize: 18, ml: 8 }}>
-                Set Subscription
-              </Typography>
-              <Box my={3}>
-                <Grid
-                  container
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  //   bgcolor={"red"}
-                  sx={{
-                    borderBottom: 1,
-                    borderBottomColor: "black",
-                    width: "22vw",
-                  }}
-                >
-                  <Typography>180 GNF </Typography>
-                  <Typography> to </Typography>
 
-                  <FormControl
-                    sx={{
-                      minWidth: "123px",
-                      borderColor: "white",
-                      borderRadius: 12,
-                    }}
-                    size={"small"}
-                  >
-                    <InputLabel id="demo-simple-select-label">usd</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      label="Age"
-                      onChange={(e) => setAge(e.target.value)}
-                    >
-                      <MenuItem value={20}>usd</MenuItem>
-                      <MenuItem value={10}>pkr</MenuItem>
-                      <MenuItem value={30}>inr</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Box>
-              <Box my={3}>
-                <Grid
-                  container
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  //   bgcolor={"red"}
-                  sx={{
-                    borderBottom: 1,
-                    borderBottomColor: "black",
-                    width: "22vw",
+              <Box sx={{ display: 'flex', flexDirection: 'column', }} >
+                <TextField
+                  label="From"
+                  value={from}
+                  onChange={(event) => setFrom(event.target.value)}
+                  type="number"
+                  InputProps={{
+                    inputProps: { min: 0 },
+                    endAdornment: <InputAdornment position="end">USD</InputAdornment>,
                   }}
+                  required
+                />
+                <TextField
+                  label="To"
+                  value={to}
+                  onChange={(event) => setTo(event.target.value)}
+                  type="number"
+                  InputProps={{
+                    inputProps: { min: 0 },
+                    endAdornment: <InputAdornment position="end">USD</InputAdornment>,
+                  }}
+                  required
+                />
+                <Select
+                  value={selectedCountry}
+                  onChange={(event) => setSelectedCountry(event.target.value)}
+                  displayEmpty
+                  required
+                  type="string"
                 >
-                  <Typography>180 GNF </Typography>
-                  <Typography> </Typography>
-
-                  <FormControl
-                    sx={{
-                      minWidth: "123px",
-                      borderColor: "white",
-                      borderRadius: 12,
-                    }}
-                    size={"small"}
-                  >
-                    <InputLabel id="demo-simple-select-label">Mali</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      label="Age"
-                      onChange={(e) => setAge(e.target.value)}
-                    >
-                      <MenuItem value={20}>Mali</MenuItem>
-                      <MenuItem value={10}>Pakistan</MenuItem>
-                      <MenuItem value={30}>Chinia</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
+                  <MenuItem value="" disabled>
+                    Select country
+                  </MenuItem>
+                  {countries.map((country) => (
+                    <MenuItem key={country.id} value={country.id}>
+                      {country.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
+                  Submit
+                </Button>
               </Box>
-              <Button
-                onClick={() => navigate("/accounting")}
-                sx={{
-                  bgcolor: "blue",
-                  color: "white",
-                  boxShadow: "2px 2px 4px  #000",
-                  borderRadius: "60px",
-                  px: 4,
-                  py: 0.3,
-                  mt: 3,
-                  ml: 13,
-                }}
-              >
-                Done
-              </Button>
             </Box>
           </Box>
         </Box>

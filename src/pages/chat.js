@@ -37,17 +37,17 @@ const Chat = () => {
     } else {
       try {
 
-        var formDate = new FormData();
-        formDate.append("IsSeen", false);
-        formDate.append("IsFromAdmin", true);
-        formDate.append("IsToAdmin", false);
-        formDate.append("Type", 'text');
-        formDate.append("Description", input);
-        formDate.append("To", id);
-        formDate.append("From", 0);
+        var formData = new FormData();
+        formData.append("IsSeen", false);
+        formData.append("IsFromAdmin", true);
+        formData.append("IsToAdmin", false);
+        formData.append("Type", 'text');
+        formData.append("Description", input);
+        formData.append("To", id);
+        formData.append("From", 0);
 
-        // console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ formDate:", formDate)
-        const res = await SendMessage(formDate);
+        // console.log("🚀 ~ file: chat.js:39 ~ onMessageSend ~ formData:", formData)
+        const res = await SendMessage(formData);
         console.log("🚀 ~ file: chat.js:51 ~ onMessageSend ~ res:", res)
         const newMessage = {
           image: user.image,

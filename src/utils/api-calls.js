@@ -1,4 +1,5 @@
 import {
+  DeleteData,
   GetData,
   GetFormData,
   PostData,
@@ -28,6 +29,14 @@ export const Register = async (paylaod) => {
 };
 export const SendMessage = async (paylaod) => {
   const res = await PostFormData("api/message/send", paylaod);
+  if (res?.data?.succeeded) {
+    console.log("successfully Message Send!");
+  }
+
+  return res;
+};
+export const AddCountryPrice = async (paylaod) => {
+  const res = await PostData("api/country-price/add-country-price", paylaod);
   if (res?.data?.succeeded) {
     console.log("successfully Message Send!");
   }
@@ -88,6 +97,10 @@ export const GetRequestsCount = async () => {
   const res = await GetData("api/creator-request/get-requests-count");
   return res;
 };
+export const GetCountries = async () => {
+  const res = await GetData("api/country-price/get-countries");
+  return res;
+};
 
 export const ApproveRequest = async (id) => {
   const res = await PutData(`api/creator-request/approve/${id}`, {});
@@ -100,6 +113,13 @@ export const RejectRequest = async (id) => {
   const res = await PutData(`api/creator-request/reject/${id}`, {});
   if (res?.data?.succeeded) {
     console.log("successfully Update!");
+  }
+  return res;
+}
+export const DeleteContent = async (id) => {
+  const res = await DeleteData(`api/content/delete-content/${id}`);
+  if (res?.data?.succeeded) {
+    console.log("successfully Delete!");
   }
   return res;
 }
