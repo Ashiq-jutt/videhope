@@ -85,32 +85,39 @@ const routes = [
     route: "/dashboard",
     component: <EmployeePortal />,
   },
-  accessTo?.includes("Accounting") && {
-    type: "collapse",
-    name: "Accounting",
-    key: "FilterEarning",
-    icon: "accounting",
-    route: "/accounting",
-    component: <Accounting />,
-  },
+  accessTo !== "" && accessTo?.includes("Accounting") ? (
+    {
+      type: "collapse",
+      name: "Accounting",
+      key: "FilterEarning",
+      icon: "accounting",
+      route: "/accounting",
+      component: <Accounting />,
+    }
+  ) : null,
 
-  accessTo?.includes("CreatorsPanel") && {
-    type: "collapse",
-    name: "Creators Panel",
-    key: "CreatorPanel",
-    icon: "creator",
-    route: "/createPanel",
-    component: <CreatePanel />,
-  },
+  accessTo !== "" && accessTo?.includes("CreatorsPanel") ? (
+    {
+      type: "collapse",
+      name: "Creators Panel",
+      key: "CreatorPanel",
+      icon: "creator",
+      route: "/createPanel",
+      component: <CreatePanel />,
+    }
+  ) : null,
 
-  accessTo?.includes("CustomerService") && {
-    type: "collapse",
-    name: "Customer Service",
-    key: "customerService",
-    icon: "customerService",
-    route: "/customerService",
-    component: <CustomerService />,
-  },
+  accessTo !== "" && accessTo?.includes("CustomerService") ? (
+    {
+      type: "collapse",
+      name: "Customer Service",
+      key: "customerService",
+      icon: "customerService",
+      route: "/customerService",
+      component: <CustomerService />,
+    }
+  ) : null,
+
   {
     type: "collapse",
     name: "Employees Portal",
@@ -120,6 +127,7 @@ const routes = [
     component: <EmployeePortal />,
   },
 ];
+
 export default function PersistentDrawerLeft() {
   const theme = useTheme();
   // const navigation = useNavigation();
