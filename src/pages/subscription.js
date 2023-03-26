@@ -1,7 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { accountingImage } from "../assets/images";
-import { TextField, Button, Select, MenuItem, Box, InputAdornment } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  Box,
+  InputAdornment,
+} from "@material-ui/core";
 // import axios from 'axios';
 import { useEffect } from "react";
 import { useState } from "react";
@@ -9,39 +16,42 @@ import { AddCountryPrice, GetCountries } from "../utils/api-calls";
 const Subscription = () => {
   const navigate = useNavigate();
 
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState("");
   // console.log("🚀 ~ file: subscription.js:16 ~ Subscription ~ selectedCountry:", selectedCountry)
   const getCountries = async () => {
     const res = await GetCountries();
     // console.log("res in servises callss=>", res?.data);
     setCountries(res?.data || []);
-
-
-  }
+  };
   useEffect(() => {
     getCountries();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (Number(from) <= Number(to) && Number(from) > 0 && selectedCountry != '') {
+    if (
+      Number(from) <= Number(to) &&
+      Number(from) > 0 &&
+      selectedCountry != ""
+    ) {
       try {
-
         var paylaod = {
           CountryId: selectedCountry,
           // loweLimit: from,
           LowerLimit: parseFloat(from),
           // upperLimit: to
-          UpperLimit: parseFloat(to)
-        }
+          UpperLimit: parseFloat(to),
+        };
         const res = await AddCountryPrice(paylaod);
-        console.log("🚀 ~ file: chat.js:51 ~ onMessageSend ~ res:", res?.data)
-
+        console.log("🚀 ~ file: chat.js:51 ~ onMessageSend ~ res:", res?.data);
+        if (res?.data?.id) {
+          alert("Subscription price saved successfully!");
+        }
       } catch (error) {
-        console.log('error........', error?.response?.data?.Message)
+        console.log("error........", error?.response?.data?.Message);
       }
 
       setTo("");
@@ -49,7 +59,7 @@ const Subscription = () => {
       setSelectedCountry("");
       // setFlag(!flag);
     } else {
-      alert('Please fill all textfild !');
+      alert("Please fill all textfild !");
       return;
       // console.log('USD input is greater than comparison input!');
       // display error message or prevent form submission
@@ -102,8 +112,7 @@ const Subscription = () => {
               Subscriptions
             </Button>
             <Box container justifyContent={"center"} px={3} py={5}>
-
-              <Box sx={{ display: 'flex', flexDirection: 'column', }} >
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <TextField
                   label="From"
                   value={from}
@@ -111,7 +120,9 @@ const Subscription = () => {
                   type="number"
                   InputProps={{
                     inputProps: { min: 0 },
-                    endAdornment: <InputAdornment position="end">USD</InputAdornment>,
+                    endAdornment: (
+                      <InputAdornment position="end">USD</InputAdornment>
+                    ),
                   }}
                   required
                 />
@@ -122,7 +133,9 @@ const Subscription = () => {
                   type="number"
                   InputProps={{
                     inputProps: { min: 0 },
-                    endAdornment: <InputAdornment position="end">USD</InputAdornment>,
+                    endAdornment: (
+                      <InputAdornment position="end">USD</InputAdornment>
+                    ),
                   }}
                   required
                 />
@@ -142,7 +155,12 @@ const Subscription = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               </Box>
