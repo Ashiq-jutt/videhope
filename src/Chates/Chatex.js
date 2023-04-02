@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px 0",
     alignSelf: "flex-start",
     width: "50%",
-    overflowWrap:'break-word'
+    overflowWrap: 'break-word'
   },
   chatMessageRight: {
     backgroundColor: "#008080",
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     width: "50%",
     marginLeft: "50%",
-    overflowWrap:'break-word'
+    overflowWrap: 'break-word'
   },
   chatInput: {
     marginTop: "auto",
@@ -78,7 +78,7 @@ function Chatex() {
         ))}
       </div>
 
-      <div className={classes.chatInput}>
+      <div>
         <TextField
           fullWidth
           label="Message"

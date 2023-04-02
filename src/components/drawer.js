@@ -138,6 +138,20 @@ export default function PersistentDrawerLeft() {
   const [open, setOpen] = React.useState(false);
   const [route, setRoute] = React.useState("users");
   const { token, setToken } = useToken();
+
+  const [width, setWidth] = React.useState(window.innerWidth);
+
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+  React.useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    }
+  }, []);
+
+  const isMobile = width <= 768;
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -145,7 +159,6 @@ export default function PersistentDrawerLeft() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
   return (
     <Box sx={{ display: "flex" }}>
       {/* <CssBaseline backgroundColor="#0e1a2e" /> */}
@@ -177,8 +190,8 @@ export default function PersistentDrawerLeft() {
             paddingX: "10px",
           },
         }}
-        variant="persistent"
-        anchor="left"
+        variant={"persistent"}
+        anchor={"left"}
         open={open}
       >
         <DrawerHeader>

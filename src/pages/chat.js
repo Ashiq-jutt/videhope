@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import Loading from "../components/Loading";
-import { useEffect } from "react";
-import { GetChatList, GetMessage, SendMessage } from "../utils/api-calls";
-import ChatApp from "../components/chat-gpt";
 import { Box, Card, Typography } from "@material-ui/core";
-import { IMAGE_BASE_URL } from "../utils/constant";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
 import Avatar from "react-avatar";
-import { bgcolor } from "@mui/system";
+import Loading from "../components/Loading";
+import { GetChatList, GetMessage, SendMessage } from "../utils/api-calls";
+import { IMAGE_BASE_URL } from "../utils/constant";
 
 const Chat = () => {
   const user = JSON.parse(localStorage.getItem("usemsg"));
@@ -54,6 +51,7 @@ const Chat = () => {
 
         setMessages([...messages, { newMessage }]);
         const resData = await GetMessage(id);
+        console.log('res of data', resData);
         setMessages(resData?.data || []);
       } catch (error) {
         console.log("error........", error?.response?.data?.Message);
@@ -103,15 +101,14 @@ const Chat = () => {
 
   if (loading) return <Loading />;
   return (
-    <div className="d-flex">
-      <Box
-        className="col-md-6"
+    <div className="d-flex justify-content-between h-100">
+      <div
+        className="col-md-5 col-sm-6 card"
         style={{
-          bgcolor: "#FFFFFF",
-          boxShadow: "1px 1px 5px  #000",
-          marginRight: "30px",
+          // boxShadow: "1px 1px 5px  #000",
+          // marginRight: "30px",
           height:
-            "520px" /* set the height of the container to limit its size */,
+            "100%" /* set the height of the container to limit its size */,
           overflow: "auto" /* enable scrolling */,
         }}
       >
@@ -121,7 +118,7 @@ const Chat = () => {
               key={item?.userId}
               onClick={() => handleGetMessage(item)}
               className="col-md-11"
-              style={{ marginTop: "4px", padding: "7px", margin: "10px" }}
+              style={{ marginTop: "4px", margin: "10px", padding: "7px" }}
             >
               <div
                 className="d-flex "
@@ -192,24 +189,12 @@ const Chat = () => {
             </Card>
           );
         })}
-      </Box>
-      <Box
-        className="col-md-6"
-        style={{
-          bgcolor: "red",
-          boxShadow: "1px 1px 5px  #000",
-          marginLeft: "30px",
-          height:
-            "520px" /* set the height of the container to limit its size */,
-        }}
+      </div>
+      <div
+        className="col-md-6 card"
       >
         <div
           className={classes.root}
-          style={{
-            // justifyContent: "center",
-            display: "flex",
-            // alignItems: "center",
-          }}
         >
           <div className="d-flex" style={{ height: "78px" }}>
             {image && (
@@ -246,23 +231,20 @@ const Chat = () => {
             )}
           </div>
           <Box
-            className={classes.chatSection}
             sx={{
-              width: "85%",
-              bgcolor: "grey",
-              height: "380px",
-              overflow: "auto",
-              // '&::-webkit-scrollbar': { display: 'none' }
-              /* enable scrolling */
+              height: '450px',
+              overflow: 'auto',
             }}
           >
             {messages?.map((msg) => {
               return (
                 <div
                   key={msg?.id}
-                  className="d-flex"
+                  className="d-flex align-items-center"
                   style={{
+                    marginBottom: '2px',
                     flexDirection: msg.to == user.id ? "row" : "row-reverse",
+
                   }}
                 >
                   {image && msg.to == user.id ? (
@@ -270,10 +252,10 @@ const Chat = () => {
                       alt={"Profile here"}
                       src={`${IMAGE_BASE_URL}${image}`}
                       style={{
-                        height: "40px",
-                        width: "40px",
+                        height: "30px",
+                        width: "30px",
                         borderRadius: "100px",
-                        marginTop: "10px",
+                        // marginTop: "10px",
                       }}
                     />
                   ) : (
@@ -281,10 +263,10 @@ const Chat = () => {
                       alt={"Profile here"}
                       src={`${IMAGE_BASE_URL}${user.profile}`}
                       style={{
-                        height: "40px",
-                        width: "40px",
+                        height: "30px",
+                        width: "30px",
                         borderRadius: "100px",
-                        marginTop: "10px",
+                        // marginTop: "10px",
                       }}
                     />
                     // <Avatar name={name} size="40" round={true} />
@@ -320,22 +302,19 @@ const Chat = () => {
           >
             <TextField
               style={{ width: "87%" }}
-              label="type here message"
+              label="Type here"
               // multiline
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
             />
-
             <Button variant="contained" color="primary" onClick={onMessageSend}>
               Send
             </Button>
           </div>
         </div>
-      </Box>
+      </div>
     </div>
-
-    // <ChatApp />
   );
 };
 
@@ -373,6 +352,6 @@ const useStyles = makeStyles((theme) => ({
     overflowWrap: "break-word",
   },
   chatInput: {
-    // marginTop: "auto",
+    marginTop: "auto",
   },
 }));

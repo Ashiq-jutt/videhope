@@ -95,6 +95,7 @@ const AdminLogin = () => {
                         autoComplete="off"
                     >
                         <TextField
+                            type="email"
                             onChange={(event) => {
                                 setPayload({ ...payload, email: event?.target?.value })
                                 console.log('event value', event?.target?.value);

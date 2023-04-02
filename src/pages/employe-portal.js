@@ -57,7 +57,7 @@ const EmployeePortal = () => {
             key={index}
             className="card"
             sx={{
-              boxShadow: "3px 4px 10px  #000",
+              // boxShadow: "3px 4px 10px  #000",
               shadowOpacity: 0.46,
               width: "26rem",
               height: "4.2rem",

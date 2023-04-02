@@ -32,7 +32,7 @@ function App() {
   const { token, setToken } = useToken(null);
 
   return (
-    <>
+    <div>
       <Routes>
         {!token ? (
           <Route path="*" element={<AdminLogin setToken={setToken} />} />
@@ -63,7 +63,7 @@ function App() {
           </Route>
         )}
       </Routes>
-    </>
+    </div>
   );
 }
 
