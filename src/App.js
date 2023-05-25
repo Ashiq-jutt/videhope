@@ -26,6 +26,7 @@ import Subscription from "./pages/subscription";
 import UserProfile from "./pages/user-profile";
 import WithdrawRwquest from "./pages/withdraw-request";
 import ErrorPage from "./pages/ErrorPage";
+import Creators from "./pages/creators";
 
 function App() {
   const { user } = useSelector((s) => s);
@@ -55,6 +56,7 @@ function App() {
             <Route path="creatorEarning" element={<CreatorEarning />} />
             <Route path="createPanel" element={<CreatePanel />} />
             <Route path="newest" element={<Newest />} />
+            <Route path="Creators" element={<Creators />} />
             <Route path="customerService" element={<CustomerService />} />
             <Route path="contentReport" element={<ContentReport />} />
             <Route path="accountReported" element={<AccountReported />} />

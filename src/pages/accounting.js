@@ -38,11 +38,8 @@ const Accounting = () => {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <div
-        
-          className="card" style={{height: "250px",width: '250px'}}
-        >
-          <img src={accountingImage} style={{height:'250px'}} />
+        <div className="card" style={{ height: "250px", width: "250px" }}>
+          <img src={accountingImage} style={{ height: "250px" }} />
         </div>
 
         <Button
@@ -55,7 +52,7 @@ const Accounting = () => {
             px: 14,
             py: 1.4,
             mt: 3,
-            textTransform:'capitalize'
+            textTransform: "capitalize",
           }}
         >
           Subscriptions
@@ -71,13 +68,13 @@ const Accounting = () => {
             px: 12.2,
             py: 1.4,
             mt: 2,
-            textTransform:'capitalize'
+            textTransform: "capitalize",
           }}
         >
           Widthraw Request
         </Button>
         <Button
-          onClick={() => navigate("/creatorEarning")}
+          onClick={() => navigate("/Creators")}
           sx={{
             bgcolor: "white",
             color: "grey",
@@ -86,7 +83,7 @@ const Accounting = () => {
             px: 12.2,
             py: 1.4,
             mt: 2,
-            textTransform:'capitalize'
+            textTransform: "capitalize",
           }}
         >
           Creator Earnings
@@ -101,7 +98,7 @@ const Accounting = () => {
             px: 11.9,
             py: 1.4,
             mt: 2,
-            textTransform:'capitalize'
+            textTransform: "capitalize",
           }}
         >
           Subscribed Amount
