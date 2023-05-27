@@ -2,9 +2,27 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { creatorEarning } from "../assets/images";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IMAGE_BASE_URL } from "../utils/constant";
+import { getCreatorEarnings } from "../utils/api-calls";
+import Loading from "../components/Loading";
+import moment from "moment/moment";
 const CreatorEarning = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const myData = location?.state?.item;
+  const [loading, setLoading] = React.useState(false);
+  const [data, setData] = React.useState([]);
+  const [filter, setFilter] = React.useState(1);
+  React.useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const res = await getCreatorEarnings(myData?.userId);
+      setData(res?.data);
+      setLoading(false);
+    })();
+  }, [filter]);
+  if (loading) return <Loading />;
   return (
     <Box>
       <Button
@@ -23,7 +41,10 @@ const CreatorEarning = () => {
       >
         Creator Earnings
       </Button>
-      <Box container sx={{ display: "flex", flexDirection: { sm: "row", xs: 'column' } }}>
+      <Box
+        container
+        sx={{ display: "flex", flexDirection: { sm: "row", xs: "column" } }}
+      >
         <Box>
           <Box
             sx={{
@@ -42,22 +63,22 @@ const CreatorEarning = () => {
           >
             <Box>
               <img
-                src={creatorEarning}
+                src={IMAGE_BASE_URL + myData?.userImage}
                 style={{ width: "237px", height: "248px", borderRadius: 25 }}
               />
 
               <Typography fontSize={"34px"} textAlign={"center"} color={"grey"}>
-                Ahmad
+                {myData?.username}
               </Typography>
               <Typography fontSize={"12px"} textAlign={"center"} color={"grey"}>
-                ahmadworkspace@gmail.com
+                {myData?.userEmail}
               </Typography>
               <Typography fontSize={26} textAlign={"center"}>
                 Total Earning
               </Typography>
 
               <Typography fontSize={36} textAlign={"center"} color={"blue"}>
-                100$
+                {data?.totalEarnings} GNF
               </Typography>
             </Box>
           </Box>
@@ -88,11 +109,11 @@ const CreatorEarning = () => {
 
             <Box sx={{ flex: 1, direction: "column" }}>
               <Button
-                //  sx={{}}
+                onClick={() => setFilter(1)}
                 sx={{
                   textTransform: "none",
-                  bgcolor: "blue",
-                  color: "grey",
+                  bgcolor: filter == 1 ? "blue" : "white",
+                  color: filter == 1 ? "white" : "grey",
                   boxShadow: "2px 2px 4px  #000",
                   borderRadius: "60px",
                   px: 10.2,
@@ -103,10 +124,11 @@ const CreatorEarning = () => {
                 Weekly
               </Button>
               <Button
+                onClick={() => setFilter(2)}
                 sx={{
                   textTransform: "none",
-                  bgcolor: "white",
-                  color: "grey",
+                  bgcolor: filter == 2 ? "blue" : "white",
+                  color: filter == 2 ? "white" : "grey",
                   boxShadow: "2px 2px 4px  #000",
                   borderRadius: "60px",
                   px: 10,
@@ -117,10 +139,11 @@ const CreatorEarning = () => {
                 Monthly
               </Button>
               <Button
+                onClick={() => setFilter(3)}
                 sx={{
                   textTransform: "none",
-                  bgcolor: "white",
-                  color: "grey",
+                  bgcolor: filter == 3 ? "blue" : "white",
+                  color: filter == 3 ? "white" : "grey",
                   boxShadow: "2px 2px 4px  #000",
                   borderRadius: "60px",
                   px: 11,
@@ -136,7 +159,7 @@ const CreatorEarning = () => {
         <Box
           sx={{
             bgcolor: "white",
-            width: { sm: "40vw", xs: '80vw' },
+            width: { sm: "40vw", xs: "80vw" },
             boxShadow: "1px 1px 5px  #000",
             borderRadius: "35px",
             direction: "column",
@@ -150,7 +173,7 @@ const CreatorEarning = () => {
             container
             sx={{
               px: 2,
-              width: { sm: "40vw", xs: '80vw' },
+              width: { sm: "40vw", xs: "80vw" },
               boxShadow: "1px 1px 5px  #000",
               borderRadius: "0px 0px 15px 15px ",
               // display: "flex",
@@ -159,39 +182,42 @@ const CreatorEarning = () => {
               mt: "1px",
             }}
           >
-            <Grid container justifyContent={"center"} xs={4}>
+            <Grid container justifyContent={"center"} xs={3}>
               Name
             </Grid>
 
-            <Grid container justifyContent={"center"} xs={4}>
+            <Grid container justifyContent={"center"} xs={3}>
               Amount
             </Grid>
-            <Grid container justifyContent={"center"} xs={4}>
+            <Grid container justifyContent={"center"} xs={3}>
               Time
             </Grid>
+            <Grid container justifyContent={"center"} xs={3}>
+              Status
+            </Grid>
           </Grid>
-          {/* <Grid container xs={12}>
-          Dec6
-        </Grid> */}
-          {[, 222, 2, , 2, 3, 3, 3, 3, 3, 33, 3, 3, 3].map((item, index) => (
+          {data?.withdrawals?.map((item, index) => (
             <Grid
               key={index}
               container
               sx={{
-                width: { sm: "40vw", xs: '80vw' },
+                width: { sm: "40vw", xs: "80vw" },
                 direction: "row",
                 py: 1.6,
                 // mt: "15px",
               }}
             >
-              <Grid container justifyContent={"center"} xs={4}>
-                Ahmad
+              <Grid container justifyContent={"center"} xs={3}>
+                {myData?.username}
               </Grid>
-              <Grid container justifyContent={"center"} xs={4}>
-                20$
+              <Grid container justifyContent={"center"} xs={3}>
+                {item?.requestedAmount} GNF
               </Grid>
-              <Grid container justifyContent={"center"} xs={4}>
-                3:04 pm
+              <Grid container justifyContent={"center"} xs={3}>
+                {moment(item?.requestedDateTime).format("YYYY, DD MMMM")}
+              </Grid>
+              <Grid container justifyContent={"center"} xs={3}>
+                {item?.status}
               </Grid>
             </Grid>
           ))}

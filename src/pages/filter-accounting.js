@@ -8,6 +8,9 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { isMobile } from "react-device-detect";
 
 import { useNavigate } from "react-router-dom";
+import { getWithdrawRequests } from "../utils/api-calls";
+import Loading from "../components/Loading";
+import { IMAGE_BASE_URL } from "../utils/constant";
 const useStyles = makeStyles((theme) => ({
   root: {
     [theme.breakpoints.down("sm")]: {
@@ -20,15 +23,25 @@ const FilterEarning = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const [loading, setLoading] = React.useState(false);
+  const [data, setData] = React.useState([]);
+  const [filter, setFilter] = React.useState("Daily");
+  React.useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const res = await getWithdrawRequests();
+      setData(res?.data);
+      setLoading(false);
+    })();
+  }, [filter]);
+  if (loading) return <Loading />;
   return (
     // <Box sx={{ display: { xs: "block", sm: "b", xl: "block" } }}>
     <Box
       // container
       sx={{
         display: "flex",
-        flexDirection: { sm: "row", xs: 'column' }
+        flexDirection: { sm: "row", xs: "column" },
       }}
     >
       <Box>
@@ -74,10 +87,11 @@ const FilterEarning = () => {
 
           <Box sx={{ flex: 1, direction: "column", px: 10 }}>
             <Button
+              onClick={() => setFilter("Daily")}
               sx={{
                 textTransform: "none",
-                bgcolor: "blue",
-                color: "white",
+                bgcolor: filter == "Daily" ? "blue" : "white",
+                color: filter == "Daily" ? "white" : "grey",
                 boxShadow: "2px 2px 4px  #000",
                 borderRadius: "60px",
                 px: 11,
@@ -88,10 +102,11 @@ const FilterEarning = () => {
               Daily
             </Button>
             <Button
+              onClick={() => setFilter("Monthly")}
               sx={{
                 textTransform: "none",
-                bgcolor: "white",
-                color: "grey",
+                bgcolor: filter == "Monthly" ? "blue" : "white",
+                color: filter == "Monthly" ? "white" : "grey",
                 boxShadow: "2px 2px 4px  #000",
                 borderRadius: "60px",
                 px: 10,
@@ -102,10 +117,11 @@ const FilterEarning = () => {
               Monthly
             </Button>
             <Button
+              onClick={() => setFilter("Yearly")}
               sx={{
                 textTransform: "none",
-                bgcolor: "white",
-                color: "grey",
+                bgcolor: filter == "Yearly" ? "blue" : "white",
+                color: filter == "Yearly" ? "white" : "grey",
                 boxShadow: "2px 2px 4px  #000",
                 borderRadius: "60px",
                 px: 11,
@@ -113,10 +129,10 @@ const FilterEarning = () => {
                 py: "2px",
               }}
             >
-              yearly
+              Yearly
             </Button>
           </Box>
-          <Typography
+          {/* <Typography
             fontSize={"24px"}
             mt={3}
             textAlign={"center"}
@@ -139,17 +155,17 @@ const FilterEarning = () => {
             color={"grey"}
           >
             End Date
-          </Typography>
+          </Typography> */}
         </Box>
       </Box>
       <Box>
         <Typography sx={{ ml: 7, fontSize: "24px", color: "grey" }}>
-          Daily
+          {filter}
         </Typography>
         <Box
           sx={{
             bgcolor: "white",
-            width: { sm: "48vw", xs: '90vw' },
+            width: { sm: "48vw", xs: "90vw" },
             boxShadow: "1px 1px 5px  #000",
             borderRadius: "35px",
             direction: "column",
@@ -157,10 +173,10 @@ const FilterEarning = () => {
             mx: 1,
           }}
         >
-          <Grid
+          {/* <Grid
             container
             sx={{
-              width: { sm: "44vw", xs: '76vw' },
+              width: { sm: "44vw", xs: "76vw" },
               boxShadow: "1px 1px 5px  #000",
               borderRadius: "0px 0px 15px 15px",
               direction: "row",
@@ -170,12 +186,7 @@ const FilterEarning = () => {
               mx: 3,
             }}
           >
-            <Grid
-              container
-              justifyContent={"center"}
-              xs={4}
-              fontSize={"18px"}
-            >
+            <Grid container justifyContent={"center"} xs={4} fontSize={"18px"}>
               Approved
             </Grid>
 
@@ -184,50 +195,66 @@ const FilterEarning = () => {
               fontSize={"18px"}
               justifyContent={"center"}
               xs={4}
-              sx={{ borderLeft: { sm: 1, xs: 0 }, borderRight: { sm: 1, xs: 0 } }}
+              sx={{
+                borderLeft: { sm: 1, xs: 0 },
+                borderRight: { sm: 1, xs: 0 },
+              }}
             >
               Pending
             </Grid>
-            <Grid
-              container
-              fontSize={"18px"}
-              justifyContent={"center"}
-              xs={4}
-            >
+            <Grid container fontSize={"18px"} justifyContent={"center"} xs={4}>
               Rejected
             </Grid>
-          </Grid>
+          </Grid> */}
 
-          {[2, 3, 3, 3, 3, 3].map((item, index) => (
-            <Grid
-              key={index}
-              container
-              sx={{
-                width: { sm: "48vw", xs: '90vw' },
-                direction: "row",
-                py: 1.6,
-                // mt: "15px",
-              }}
-            >
-              <Grid container justifyContent={"center"} xs={4}>
-                <Box container sx={{ dispaly: "flex", direction: "row" }}>
+          <Grid
+            container
+            sx={{
+              width: { sm: "48vw", xs: "90vw" },
+              direction: "row",
+              py: 1.6,
+            }}
+          >
+            {data?.map((item, index) => (
+              <Grid
+                key={index}
+                container
+                justifyContent={"center"}
+                alignItems={"center"}
+                xs={4}
+                sx={{ marginTop: 2 }}
+              >
+                <Box
+                  container
+                  sx={{
+                    dispaly: "flex",
+                    direction: "row",
+                  }}
+                >
                   <img
                     alt="Pic here"
-                    src={withdrawPic}
+                    src={IMAGE_BASE_URL + item?.user?.profile}
                     style={{
                       height: "80px",
                       width: "70px",
                       borderRadius: "1000px",
                     }}
                   />
-                  <Typography>Ahmad</Typography>
+                  <Typography>{item?.user?.fullName}</Typography>
+                  <Typography style={{ textAlign: "center" }}>
+                    {item?.request?.requestedAmount} GNF
+                  </Typography>
+                  <Typography style={{ textAlign: "center" }}>
+                    {item?.request?.status}
+                  </Typography>
                 </Box>
                 <Button
-                  onClick={() => navigate("/withdrawRwquest")}
+                  onClick={() =>
+                    navigate("/withdrawRwquest", { state: { item: item } })
+                  }
                   sx={{
                     textTransform: "capitalize",
                     bgcolor: "blue",
-                    // bgcolor: "#e2e2e2 ",
                     color: "white",
                     borderRadius: "50px",
                     width: "200px",
@@ -238,65 +265,8 @@ const FilterEarning = () => {
                   Detail
                 </Button>
               </Grid>
-
-              <Grid container justifyContent={"center"} xs={4}>
-                <Box container sx={{ dispaly: "flex", direction: "row" }}>
-                  <img
-                    alt="Pic here"
-                    src={withdrawPic}
-                    style={{
-                      height: "80px",
-                      width: "70px",
-                      borderRadius: "1000px",
-                    }}
-                  />
-                  <Typography>Ahmad</Typography>
-                </Box>
-                <Button
-                  sx={{
-                    textTransform: "none",
-                    bgcolor: "#e2e2e2 ",
-                    color: "white",
-                    // boxShadow: "2px 2px 4px  #000",
-                    borderRadius: "50px",
-                    width: "200px",
-                    mt: 1,
-                    height: "42px",
-                  }}
-                >
-                  Detail
-                </Button>
-              </Grid>
-              <Grid container justifyContent={"center"} xs={4}>
-                <Box container sx={{ dispaly: "flex", direction: "row" }}>
-                  <img
-                    alt="Pic here"
-                    src={withdrawPic}
-                    style={{
-                      height: "80px",
-                      width: "70px",
-                      borderRadius: "1000px",
-                    }}
-                  />
-                  <Typography>Ahmad</Typography>
-                </Box>
-                <Button
-                  sx={{
-                    textTransform: "none",
-                    bgcolor: "#e2e2e2 ",
-                    color: "white",
-                    // boxShadow: "2px 2px 4px  #000",
-                    borderRadius: "50px",
-                    width: "200px",
-                    mt: 1,
-                    height: "42px",
-                  }}
-                >
-                  Detail
-                </Button>
-              </Grid>
-            </Grid>
-          ))}
+            ))}
+          </Grid>
         </Box>
       </Box>
     </Box>

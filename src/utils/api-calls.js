@@ -32,7 +32,11 @@ export const SendMessage = async (paylaod) => {
   if (res?.data?.succeeded) {
     console.log("successfully Message Send!");
   }
-
+  return res;
+};
+export const UpdateWithdrawRequestStatus = async (paylaod) => {
+  const res = await PostData("api/withdraw/update-status", paylaod);
+  console.log("Response of api is == > ", res);
   return res;
 };
 export const AddCountryPrice = async (paylaod) => {
@@ -40,7 +44,6 @@ export const AddCountryPrice = async (paylaod) => {
   if (res?.data?.succeeded) {
     console.log("successfully Message Send!");
   }
-
   return res;
 };
 export const UpdateStaff = async (paylaod) => {
@@ -93,6 +96,14 @@ export const GetRequestType = async (type) => {
   return res;
 };
 
+export const getCreatorEarnings = async (id) => {
+  const res = await GetData(`api/withdraw/get-earnings/${id}`);
+  return res;
+};
+export const getWithdrawRequests = async () => {
+  const res = await GetData(`api/withdraw/get-all`);
+  return res;
+};
 export const GetRequestsCount = async () => {
   const res = await GetData("api/creator-request/get-requests-count");
   return res;
@@ -108,18 +119,18 @@ export const ApproveRequest = async (id) => {
     console.log("successfully Update!");
   }
   return res;
-}
+};
 export const RejectRequest = async (id) => {
   const res = await PutData(`api/creator-request/reject/${id}`, {});
   if (res?.data?.succeeded) {
     console.log("successfully Update!");
   }
   return res;
-}
+};
 export const DeleteContent = async (id) => {
   const res = await DeleteData(`api/content/delete-content/${id}`);
   if (res?.data?.succeeded) {
     console.log("successfully Delete!");
   }
   return res;
-}
+};
