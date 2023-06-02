@@ -1,15 +1,12 @@
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { filterDashboardImage } from "../assets";
-import { filterProfile, newestPic, withdrawPic } from "../assets/images";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { isMobile } from "react-device-detect";
 
 import { useNavigate } from "react-router-dom";
-import { getWithdrawRequests } from "../utils/api-calls";
 import Loading from "../components/Loading";
+import { getWithdrawRequests } from "../utils/api-calls";
 import { IMAGE_BASE_URL } from "../utils/constant";
 const useStyles = makeStyles((theme) => ({
   root: {

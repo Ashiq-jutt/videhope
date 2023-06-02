@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IMAGE_BASE_URL } from "../utils/constant";
 import { ApproveRequest, RejectRequest } from "../utils/api-calls";
 import Loading from "../components/Loading";
+import UserCard from "../components/user-card";
 
 const NewestDetail = () => {
   const navigate = useNavigate();
@@ -13,14 +14,16 @@ const NewestDetail = () => {
   const location = useLocation();
   const myData = location?.state?.myData;
   const item = location?.state?.item;
-  console.log("🚀 ~ file: newest-detail.js:9 ~ item:", item)
+  console.log("🚀 ~ file: newest-detail.js:9 ~ item:", item);
   const [flag, setFlag] = useState(false);
 
   const handleCheck = (event) => {
     setFlag(event.target.checked);
-
   };
-  console.log("🚀 ~ file: newest-detail.js:20 ~ handleCheck ~ event.target.checked1:", flag)
+  console.log(
+    "🚀 ~ file: newest-detail.js:20 ~ handleCheck ~ event.target.checked1:",
+    flag
+  );
   const handlePut = () => {
     if (flag) {
       (async () => {
@@ -29,46 +32,38 @@ const NewestDetail = () => {
           const res = await ApproveRequest(item?.request?.id);
           console.log("Approve Message =>", res?.data);
         } catch (error) {
-          console.log("🚀 ~ file: newest-detail.js:32 ~ error:", error)
-
+          console.log("🚀 ~ file: newest-detail.js:32 ~ error:", error);
         }
         setLoading(false);
       })();
-    }
-    else {
+    } else {
       (async () => {
         setLoading(true);
         try {
           const res = await RejectRequest(item?.request?.id);
           console.log("Reject Message =>", res?.data);
         } catch (error) {
-          console.log("🚀 ~ file: newest-detail.js:44 ~ error:", error)
-
+          console.log("🚀 ~ file: newest-detail.js:44 ~ error:", error);
         }
         setLoading(false);
       })();
     }
-    navigate('/newest', { state: { item: myData } })
-  }
+    navigate("/newest", { state: { item: myData } });
+  };
   if (loading) return <Loading />;
   return (
-    <Box
-      display={"flex"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
+    <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
       <Box>
         <Box
           sx={{
             mt: 4,
-            height: { sm: "250px", xs: '500px' },
-            width: { sm: "470px", xs: '235px' },
             bgcolor: "white",
             boxShadow: "1px 1px 5px  #000",
             borderRadius: "50px",
-            display: { sm: "flex", xs: 'block' },
-
           }}
+          justifyContent={"center"}
+          alignItems={"center"}
+          display={"flex"}
         >
           <Grid
             sx={{
@@ -81,11 +76,11 @@ const NewestDetail = () => {
               alt={"photoo here"}
               src={`${IMAGE_BASE_URL}${item?.userImage}`}
               style={{
-                height: '245px',
-                width: '245px',
+                height: "245px",
+                width: "245px",
                 borderRadius: "150px",
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
               }}
             />
           </Grid>
@@ -95,7 +90,6 @@ const NewestDetail = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-
             }}
           >
             <Box>
@@ -124,25 +118,24 @@ const NewestDetail = () => {
                   inputProps={{ "aria-label": "controlled" }}
                 />
               </Box>
-
             </Box>
           </Box>
         </Box>
-        <Box justifyContent={"center"}>
+        <UserCard item={item?.request} />
+        <Box justifyContent={"center"} alignItems={"center"} display={"flex"}>
           <Button
             // onClick={() => navigate("/newest")}
             onClick={() => handlePut()}
             sx={{
               variant: "outlined",
               color: "white",
-              width: { sm: "12vw", xs: '30vw' },
+              width: { sm: "12vw", xs: "30vw" },
               height: "30px",
               borderRadius: "20px",
               bgcolor: "blue",
               mt: 3,
               mb: 1,
-              ml: 18,
-              textTransform: 'capitalize',
+              textTransform: "capitalize",
             }}
           >
             Done

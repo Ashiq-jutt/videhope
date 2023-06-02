@@ -104,6 +104,10 @@ export const getWithdrawRequests = async () => {
   const res = await GetData(`api/withdraw/get-all`);
   return res;
 };
+export const getBankAccount = async (userId) => {
+  const res = await GetData(`api/bank-account/get/${userId}`);
+  return res;
+};
 export const GetRequestsCount = async () => {
   const res = await GetData("api/creator-request/get-requests-count");
   return res;

@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   FormControl,
   Grid,
@@ -10,25 +9,39 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { IMAGE_BASE_URL } from "../utils/constant";
-import { UpdateWithdrawRequestStatus } from "../utils/api-calls";
 import { useAlert } from "react-alert";
+import { useLocation, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
+import {
+  UpdateWithdrawRequestStatus,
+  getBankAccount,
+} from "../utils/api-calls";
+import { IMAGE_BASE_URL } from "../utils/constant";
 const WithdrawRwquest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const alert = useAlert();
   const request = location?.state?.item;
-  console.log("User info ===> ", request?.user);
   const [status, setStatus] = React.useState(request?.request?.status);
-  const [bankAccount, setBankAccount] = React.useState(
-    request?.request?.bankAccount
-  );
+  const [loading, setLoading] = React.useState(false);
+  const [account, setAccount] = React.useState(false);
+  const [bankAccount, setBankAccount] = React.useState("");
+  const [note, setNote] = React.useState(request?.request?.adminNotes);
+  React.useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const res = await getBankAccount(request?.user?.id);
+      console.log("Bank Account info ===> ", res?.data);
+      setAccount(res?.data);
+      setBankAccount(res?.data?.accountNumber || "No Account");
+      setLoading(false);
+    })();
+  }, []);
   const updateStatus = async () => {
     var payload = {
       id: request?.request?.id,
       status: status,
-      adminNotes: "",
+      adminNotes: note,
       account: bankAccount,
     };
     var res = await UpdateWithdrawRequestStatus(payload);
@@ -39,6 +52,7 @@ const WithdrawRwquest = () => {
       alert.error("Something went wrong");
     }
   };
+  if (loading) return <Loading />;
   return (
     <Box
       display="flex"
@@ -144,21 +158,88 @@ const WithdrawRwquest = () => {
           </Box>
         </Box>
       </Box>
+      {account?.accountNumber ? (
+        <>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { width: { sm: "42ch", xs: "30ch" }, my: 3 },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-basic"
+              label="Bank Name"
+              variant="standard"
+              autoComplete="off"
+              aria-readonly={true}
+              value={account?.bankName}
+              onChange={(e) => setBankAccount(e.target.value)}
+            />
+          </Box>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { width: { sm: "42ch", xs: "30ch" }, my: 3 },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-basic"
+              label="IBAN Number"
+              variant="standard"
+              autoComplete="off"
+              aria-readonly={true}
+              value={account?.ibanNumber}
+              onChange={(e) => setBankAccount(e.target.value)}
+            />
+          </Box>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { width: { sm: "42ch", xs: "30ch" }, my: 3 },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-basic"
+              label="Bank Account  Number"
+              variant="standard"
+              autoComplete="off"
+              aria-readonly={true}
+              value={account?.accountNumber}
+              onChange={(e) => setBankAccount(e.target.value)}
+            />
+          </Box>
+        </>
+      ) : (
+        <Box>
+          <h5 style={{ color: "red", marginTop: 5 }}>
+            {"No Bank Account Information Provided"}
+          </h5>
+        </Box>
+      )}
+
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { width: { sm: "42ch", xs: "30ch" }, my: 3 },
+          "& > :not(style)": { width: { sm: "42ch", xs: "30ch" }, my: 1 },
         }}
         noValidate
         autoComplete="off"
       >
         <TextField
           id="standard-basic"
-          label="Bank Account"
+          label="Note"
           variant="standard"
           autoComplete="off"
-          onChange={(e) => setBankAccount(e.target.value)}
-          value={request?.request?.bankAccount}
+          aria-readonly={true}
+          value={note}
+          multiline
+          onChange={(e) => setNote(e.target.value)}
         />
       </Box>
       <Button
